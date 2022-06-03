@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -22,7 +25,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User{
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long customerId;
 	
 	@Column(name = "first_name", length = 20, nullable = false)
 	private String firstName;
