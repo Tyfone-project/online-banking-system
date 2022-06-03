@@ -14,6 +14,7 @@ public interface AccountRepositry extends JpaRepository<Account, Long>{
 	@Query("Select a from Account a where a.accountNo like :accountNumber")
 	Optional<Account> findByAccountNo(@Param("accountNumber") long accountNumber);
 
-	@Query( "select a from Account a where a.user.customerId=:customerId")
+@Query( "select a from Account a where a.user.customerId=:customerId")
 	List<Account> findByCustomerId(long customerId);
+
 }
