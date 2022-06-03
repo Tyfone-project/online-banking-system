@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class Transaction extends BaseEntity {
 	
 	@Column(name = "transaction_to")
-	private String transactionTo;
+	private long transactionTo;
 	
 	@Range(min = 0)
 	private BigDecimal amount;
@@ -43,7 +43,7 @@ public class Transaction extends BaseEntity {
 	private TransactionStatus transactionStatus;
 	
 	@ManyToOne
-	@JoinColumn(name = "transaction_from")
-	private Account account;
+    @JoinColumn(name = "transaction_from")
+    private Account account;
 	
 }

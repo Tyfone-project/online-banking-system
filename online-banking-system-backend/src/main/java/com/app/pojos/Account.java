@@ -25,12 +25,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_no")
     private long accountNo;
+
 
     @Column(nullable = false)
     @Length(min = 4, max = 4)
