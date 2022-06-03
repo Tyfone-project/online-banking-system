@@ -13,6 +13,8 @@ import com.app.dao.TransactionRepositry;
 import com.app.dto.AccountDto;
 import com.app.pojos.Account;
 import com.app.pojos.AccountType;
+import com.app.pojos.Transaction;
+import com.app.pojos.TransactionStatus;
 import com.app.pojos.User;
 
 @Service
