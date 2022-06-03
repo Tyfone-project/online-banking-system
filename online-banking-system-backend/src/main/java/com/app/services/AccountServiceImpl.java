@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.AccountRepositry;
 import com.app.dao.TransactionRepositry;
+import com.app.dao.UserRepository;
 import com.app.dto.AccountDto;
 import com.app.pojos.Account;
 import com.app.pojos.AccountType;
@@ -19,8 +20,11 @@ import com.app.pojos.User;
 
 @Service
 @Transactional
-public class AccountServiceImpl implements IAccountImpl {
+public class AccountServiceImpl implements IAccountService {
 
+	@Autowired
+	private UserRepository userRepo;
+	
 	@Autowired
 	private AccountRepositry accountRepo;
 
@@ -49,5 +53,22 @@ public class AccountServiceImpl implements IAccountImpl {
 		}
 		throw new RuntimeException("Insufficient Funds!!!");
 	}
+
+	@Override
+	public String saveAccount(AccountDto request) {
+		User user  = userRepo.findById(request.getCustomerId()).orElseThrow(
+				() -> new RuntimeException("No customer exists with customer id: " + request.getCustomerId()));
+		
+		Account account= new Account(request.getPin(),BigDecimal.ZERO,AccountType.valueOf(request.getAccountType().toUpperCase()), user);
+		
+		Account acc = accountRepo.save(account);	
+		return "Account with Id: " + acc.getAccountNo() + " created successfully";
+	}
+ 
+	@Override
+	public List<Account> retrieveAllAccountsByCustomerId(long customerId) {
+		return accountRepo.findByCustomerId(customerId);
+	}
+
 
 }
