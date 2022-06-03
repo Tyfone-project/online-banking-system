@@ -27,23 +27,23 @@ import lombok.NoArgsConstructor;
 @Data
 @AttributeOverride(column = @Column(name = "transaction_id"), name = "id")
 public class Transaction extends BaseEntity {
-    
-    @Column(name = "transaction_to")
-    private String transactionTo;
-    
-    @Range(min = 0)
-    private BigDecimal amount;
-    
-    @Past
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_status", length = 20)
-    private TransactionStatus transactionStatus;
-    
-    @ManyToOne
+	
+	@Column(name = "transaction_to")
+	private long transactionTo;
+	
+	@Range(min = 0)
+	private BigDecimal amount;
+	
+	@Past
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate date;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "transaction_status", length = 20)
+	private TransactionStatus transactionStatus;
+	
+	@ManyToOne
     @JoinColumn(name = "transaction_from")
     private Account account;
-    
+	
 }

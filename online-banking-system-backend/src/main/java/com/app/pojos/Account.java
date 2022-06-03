@@ -26,37 +26,38 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+
 public class Account {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "account_no")
-	private long accountNo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_no")
+    private long accountNo;
 
-	@Column(nullable = false)
-	@Length(min = 4, max = 4)
-	private String pin;
 
-	@Column(nullable = false)
-	@Range(min = 0, message = "Balance cannot be negative")
-	private BigDecimal balance;
+    @Column(nullable = false)
+    @Length(min = 4, max = 4)
+    private String pin;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "account_type", nullable = false, length = 20)
-	private AccountType accountType;
+    @Column(nullable = false)
+    @Range(min = 0, message = "Balance cannot be negative")
+    private BigDecimal balance;
 
-	@ManyToOne
-	@JoinColumn(name = "customer_id")
-	// @Column(nullable = false)
-	private User user;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account_type", nullable = false, length = 20)
+    private AccountType accountType;
 
-	public Account(String pin, BigDecimal balance, AccountType accountType, User user) {
-		super();
-		this.pin = pin;
-		this.balance = balance;
-		this.accountType = accountType;
-		this.user = user;
-	}
-	
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    // @Column(nullable = false)
+    private User user;
 
+    public Account(String pin, BigDecimal balance, AccountType accountType, User user) {
+        super();
+        this.pin = pin;
+        this.balance = balance;
+        this.accountType = accountType;
+        this.user = user;
+    }
+    
 }
