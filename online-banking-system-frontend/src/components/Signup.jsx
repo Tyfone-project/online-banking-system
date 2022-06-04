@@ -121,9 +121,10 @@ function Signup() {
             </Link>
           </span>
           <hr />
-          <Form onSubmit={userDetails.handleSubmit}>
+          <Form onSubmit={userDetails.handleSubmit}  enctype="multipart/form-data">
             <Form.Group className="mb-3">
               <Form.Control
+
                 name="firstName"
                 type="text"
                 placeholder="Enter First Name"
@@ -244,7 +245,7 @@ function Signup() {
         <section>
           <h2 className="fw-bolder">Enter KYC Details</h2>
           <hr />
-          <Form onSubmit={kycDetails.handleSubmit}>
+          <Form onSubmit={kycDetails.handleSubmit} encType="multipart/form-data">
             <Form.Group className="mb-3">
               <Form.Control
                 name="aadharNo"
@@ -324,6 +325,7 @@ function Signup() {
               </Button>
             </div>
           </Form>
+
         </section>
       )}
     </>

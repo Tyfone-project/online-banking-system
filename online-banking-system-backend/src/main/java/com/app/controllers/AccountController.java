@@ -9,22 +9,36 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.AccountDto;
 import com.app.dto.TransferFundsDto;
-import com.app.services.IAccountImpl;
+import com.app.services.IAccountService;
 import com.app.services.ITransactionImpl;
 
 @RestController
-@RequestMapping("/account")
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/accounts")
 public class AccountController {
 
 	@Autowired
-	private IAccountImpl accountService;
+	private IAccountService accountService;
 
 	@Autowired
-	private ITransactionImpl transactionService;
+    private ITransactionImpl transactionService;
+
+	@GetMapping("/{customerId}")
+
+	public ResponseEntity<?> accountList(@PathVariable long customerId) {
+		return new ResponseEntity<>(accountService.retrieveAllAccountsByCustomerId(customerId), HttpStatus.OK);
+	}
+
+	@PostMapping("/addAccount")
+	public ResponseEntity<?> addAccount(@RequestBody AccountDto request) {
+		System.out.println(request);
+		return new ResponseEntity<>(accountService.saveAccount(request), HttpStatus.CREATED);
+	}
 
 	@PostMapping("/transferfunds")
 	public ResponseEntity<?> processTransferFunds(@RequestBody TransferFundsDto transferFundsDetails) {
@@ -42,4 +56,5 @@ public class AccountController {
 	public ResponseEntity<?> getListofTransaction(@PathVariable long accountNumber) {
 		return new ResponseEntity<>(transactionService.getTransactionListByAccountNumber(accountNumber), HttpStatus.OK);
 	}
+
 }
