@@ -1,10 +1,7 @@
 package com.app.services;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
-import javax.sql.rowset.serial.SerialException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
@@ -28,7 +25,7 @@ public class UserServiceImpl implements IUserService {
 	private PasswordEncoder encoder;
 
 	@Override
-	public SignUpResponse registerUser(SignUpRequest request) throws SerialException, SQLException,IOException {
+	public SignUpResponse registerUser(SignUpRequest request){
 		User user = new User();
 		user.setFirstName(request.getFirstName());
 		user.setLastName(request.getLastName());
@@ -39,7 +36,6 @@ public class UserServiceImpl implements IUserService {
 		user.setAadharNo(request.getAadharNo());
 		user.setPanNo(request.getPanNo());
 		user.setEmail(request.getEmail());
-		user.setProfilePicture(request.getProfilePicture().getBytes());
 		user.setRoles(request.getRoles());
 
 		User persistentUser = userRepo.save(user);

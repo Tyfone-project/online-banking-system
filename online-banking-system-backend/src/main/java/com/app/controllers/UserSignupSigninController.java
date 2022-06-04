@@ -1,9 +1,5 @@
 package com.app.controllers;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-import javax.sql.rowset.serial.SerialException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.SignInRequest;
 import com.app.dto.SignInResponse;
@@ -41,22 +35,10 @@ public class UserSignupSigninController {
 	private IUserService userService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> signUp(@RequestParam String firstName, @RequestParam String lastName,
-			@RequestParam String password, @RequestParam String phone, @RequestParam String dob,
-			@RequestParam String address, @RequestParam String aadharNo, @RequestParam String panNo,
-			@RequestParam String email, @RequestParam MultipartFile profilePicture, @RequestParam String roles)
-			throws IOException, SerialException, SQLException {
-
-		SignUpRequest request = new SignUpRequest(firstName, lastName, password, phone, dob, address, aadharNo, panNo,
-				email, profilePicture, roles);
-		return new ResponseEntity<>(userService.registerUser(request), HttpStatus.CREATED);
+	public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
+		System.out.println("in user reg " + request);
+		return new ResponseEntity<>(userService.registerUser(request),HttpStatus.CREATED);
 	}
-
-//	@PostMapping("/signup")
-//	public ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) throws IOException, SerialException, SQLException {
-//		System.out.println("in user reg " + request);
-//		return new ResponseEntity<>(userService.registerUser(request),HttpStatus.CREATED);
-//	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> logIn(@RequestBody SignInRequest request) {

@@ -56,7 +56,6 @@ function Signup() {
     initialValues: {
       aadharNo: "",
       panNo: "",
-      profilePicture: "" ,
       address: "",
     },
     validationSchema: Yup.object({
@@ -81,7 +80,6 @@ function Signup() {
         aadharNo: kycDetails.values.aadharNo,
         panNo: kycDetails.values.panNo,
         address: kycDetails.values.address,
-        profilePicture: kycDetails.values.profilePicture,
         roles: "ROLE_CUSTOMER"
       }).then(res=>console.log(res));
     },
@@ -100,9 +98,10 @@ function Signup() {
             </Link>
           </span>
           <hr />
-          <Form onSubmit={userDetails.handleSubmit} >
+          <Form onSubmit={userDetails.handleSubmit}  enctype="multipart/form-data">
             <Form.Group className="mb-3">
               <Form.Control
+
                 name="firstName"
                 type="text"
                 placeholder="Enter First Name"
@@ -260,23 +259,6 @@ function Signup() {
 
             <Form.Group className="mb-3">
               <Form.Control
-                name="profilePicture"
-                type="file"
-               // maxLength={10}
-                placeholder="upload your photo"
-                value={kycDetails.values.profilePicture}
-                onChange={kycDetails.handleChange}
-                onBlur={kycDetails.handleBlur}
-              />
-              {kycDetails.touched.profilePicture && kycDetails.errors.profilePicture && (
-                <span className="text-danger">
-                  <small>{kycDetails.errors.profilePicture}</small>
-                </span>
-              )}
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Control
                 name="address"
                 as="textarea"
                 rows={3}
@@ -305,6 +287,7 @@ function Signup() {
               </Button>
             </div>
           </Form>
+
         </section>
       )}
     </>
