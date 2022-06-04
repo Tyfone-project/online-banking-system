@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.PastOrPresent;
 
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,7 +35,7 @@ public class Transaction extends BaseEntity {
 	@Range(min = 0)
 	private BigDecimal amount;
 	
-	@Past
+	@PastOrPresent
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	

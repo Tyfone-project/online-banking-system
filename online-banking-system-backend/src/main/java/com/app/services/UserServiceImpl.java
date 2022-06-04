@@ -1,5 +1,6 @@
 package com.app.services;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 import javax.transaction.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dao.UserRepository;
 import com.app.dto.SignUpRequest;
@@ -25,7 +27,7 @@ public class UserServiceImpl implements IUserService {
 	private PasswordEncoder encoder;
 
 	@Override
-	public SignUpResponse registerUser(SignUpRequest request) {
+	public SignUpResponse registerUser(SignUpRequest request, MultipartFile image) {
 		User user = new User();
 		user.setFirstName(request.getFirstName());
 		user.setLastName(request.getLastName());
@@ -37,7 +39,12 @@ public class UserServiceImpl implements IUserService {
 		user.setPanNo(request.getPanNo());
 		user.setEmail(request.getEmail());
 		user.setRoles(request.getRoles());
-
+		try {
+			user.setProfilePicture(image.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		User persistentUser = userRepo.save(user);
 		SignUpResponse dto = new SignUpResponse();
 		BeanUtils.copyProperties(persistentUser, dto);// for sending resp : copied User--->User resp DTO
