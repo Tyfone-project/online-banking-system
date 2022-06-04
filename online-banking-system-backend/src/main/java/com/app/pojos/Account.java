@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
@@ -30,10 +31,11 @@ import lombok.NoArgsConstructor;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "accno_gen", strategy = "com.app.pojos.AccountNoGeneration")
+	@GeneratedValue(generator = "accno_gen")
     @Column(name = "account_no")
-    private long accountNo;
-
+    private String accountNo;
+    
 
     @Column(nullable = false)
     @Length(min = 4, max = 4)
