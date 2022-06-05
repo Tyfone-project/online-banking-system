@@ -10,8 +10,11 @@ import DisplayAllAccounts from "./components/DisplayAllAccounts";
 import Accounts from "./components/Accounts";
 import Dashboard from "./components/Dashboard";
 
+import Dashboard from "./components/Dashboard";
+import CheckPassword from "./components/CheckPassword";
 function App() {
   return (
+    
     <Routes>
 
       <Route path="/" element={<Landing />}>
@@ -26,6 +29,8 @@ function App() {
         <Route path="accounts" element={<DisplayAllAccounts />} />
       </Route>
 
+      <Route path="/dashboard" element={<Dashboard/>}/>
+      <Route path="/checkPassword" element={<CheckPassword/>}/>
     </Routes>
   );
 }
