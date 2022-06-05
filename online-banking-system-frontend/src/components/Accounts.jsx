@@ -1,75 +1,71 @@
-import { useState } from "react"
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 import { Button, Form } from "react-bootstrap";
+import { useFormik } from "formik";
 
 function Accounts() {
-
-    const custId = sessionStorage.getItem('customerId');
-
-    const [type, setType] = useState('');
-    const [pin, setPin] = useState('');
-    const [customerId, setCustomerId] = useState(custId);
-
-    const account = {
-        accountType: type,
-        pin: pin,
-        customerId: customerId
-    }
-
-    const handleTypeChange = (e) => {
-        let aType = e.target.value;
-        setType(aType);
-    }
-
-    const handlePinChange = (e) => {
-        let aPin = e.target.value;
-        setPin(aPin);
-    }
-
-    const handleSubmit = (e) => {
-        axios.post(`http://localhost:8080/accounts/addAccount`, account, {
+  const accountDetails = useFormik({
+    initialValues: {
+      accountType: "",
+      pin: "",
+    },
+    onSubmit: (values) => {
+      axios
+        .post(
+          `http://localhost:8080/api/accounts/addAccount`,
+          values,
+          {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem("tokenId")}`
-            }
+              Authorization: `Bearer ${sessionStorage.getItem("tokenId")}`,
+            },
+          }
+        )
+        .then((response) => {
+          alert("Account created successfully!!");
+          console.log(response.data);
         })
-            .then(response => {
-                alert("Account created successfully!!");
-                console.log(response.data);
-                // navigate("/")
-            })
-            .catch(err => console.log(err));
+        .catch((err) => console.log(err));
+    },
+  });
 
-    }
+  return (
+    <div>
+      <div className="d-flex justify-content-center">
+        <h1 className="fw-bolder">Create New Account</h1>
+      </div>
+      <Form onSubmit={accountDetails.handleSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Account Type</Form.Label>
+          <Form.Select
+            className="form-control"
+            name="accountType"
+            required
+            onChange={accountDetails.handleChange}
+            defaultValue="acctype"
+          >
+            <option value="acctype" disabled>
+              Select Account type
+            </option>
+            <option value="SAVINGS">SAVINGS</option>
+            <option value="CURRENT">CURRENT</option>
+            <option value="LOAN">LOAN</option>
+            <option value="SALARY">SALARY</option>
+          </Form.Select>
+        </Form.Group>
 
-    return (
-        <div>
-            <div class="d-flex justify-content-center">
-                <h1 className="fw-bolder">Create New Account</h1>
-            </div>
-            <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Account Type</Form.Label>
-                    <Form.Select className="form-control" name="type" id="type" required onChange={(e) => { handleTypeChange(e) }}>
-                        <option value="acctype" disabled selected>Select Account type</option>
-                        <option value="SAVINGS">SAVINGS</option>
-                        <option value="CURRENT">CURRENT</option>
-                        <option value="LOAN">LOAN</option>
-                        <option value="SALARY">SALARY</option>
-                    </Form.Select>
+        <Form.Group className="mb-3" controlId="formBasicPassword" required>
+          <Form.Label>Pin</Form.Label>
+          <Form.Control
+            type="password"
+            onChange={accountDetails.handleChange}
+          />
+        </Form.Group>
 
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formBasicPassword" required onChange={(e) => { handlePinChange(e) }}>
-                    <Form.Label>Pin</Form.Label>
-                    <Form.Control type="password" />
-                </Form.Group>
-
-                <Button variant="primary" type="submit" className="w-100" onClick={(e) => { handleSubmit(e) }}>
-                    Create Account
-                </Button>
-            </Form>
-        </div >
-    )
+        <Button variant="primary" type="submit" className="w-100">
+          Create Account
+        </Button>
+      </Form>
+    </div>
+  );
 }
-export default Accounts
+export default Accounts;

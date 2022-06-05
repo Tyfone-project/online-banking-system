@@ -1,7 +1,5 @@
 package com.app.dto;
 
-import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,14 +17,6 @@ public class AccountDto {
 
 	private String accountType;
 
-	private long customerId;
-
-	public AccountDto(String pin, String accountType) {
-		super();
-		this.pin = pin;
-		this.accountType = accountType;
-	}
-
 //	public AccountDto(long accountNo, String pin, BigDecimal balance, String accountType) {
 //		super();
 //		this.accountNo = accountNo;
@@ -34,8 +24,6 @@ public class AccountDto {
 //		this.balance = balance;
 //		this.accountType = accountType;
 //	}
-	
-	
 	
 }
 

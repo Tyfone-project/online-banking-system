@@ -38,7 +38,6 @@ public class Account {
     
 
     @Column(nullable = false)
-    @Length(min = 4, max = 4)
     private String pin;
 
     @Column(nullable = false)
