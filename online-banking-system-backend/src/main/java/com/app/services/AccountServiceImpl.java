@@ -27,20 +27,23 @@ public class AccountServiceImpl implements IAccountImpl {
 	public Account transferFunds(long senderAccountNumber, long receiverAccountNumber, BigDecimal amountToTransfer,
 			LocalDate amountTransferDate) {
 
+		System.out.println("in transfer funds method");
 		Account receiverAccountObject = accountRepo.findByAccountNo(receiverAccountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
 
 		Account senderAccountObject = accountRepo.findByAccountNo(senderAccountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
-		
+
 		if (senderAccountObject.getBalance().compareTo(BigDecimal.ZERO) > 0) {
+
 			senderAccountObject.setBalance(senderAccountObject.getBalance().subtract(amountToTransfer));
+
 			receiverAccountObject.setBalance(receiverAccountObject.getBalance().add(amountToTransfer));
 
-			Transaction updatedTransactionObject = new Transaction(receiverAccountNumber, amountToTransfer,
-					amountTransferDate, TransactionStatus.SUCCESS, senderAccountObject);
+			transactionRepo.save(new Transaction(receiverAccountNumber, amountToTransfer, amountTransferDate,
+					TransactionStatus.SUCCESS, senderAccountObject));
 
-			transactionRepo.save(updatedTransactionObject);
+			System.out.println("transfer funds sucessful");
 			return receiverAccountObject;
 		}
 		throw new RuntimeException("Insufficient Funds!!!");
