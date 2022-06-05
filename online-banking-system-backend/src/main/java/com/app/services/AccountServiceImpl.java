@@ -28,7 +28,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
 	private AccountRepositry accountRepo;
 

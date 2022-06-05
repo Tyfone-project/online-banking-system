@@ -1,5 +1,5 @@
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Landing from "./components/Landing";
 import Login from "./components/Login";
 import { Route, Routes } from "react-router-dom";
@@ -12,7 +12,10 @@ import Dashboard from "./components/Dashboard";
 
 import Dashboard from "./components/Dashboard";
 import CheckPassword from "./components/CheckPassword";
+import DisplayAllAccounts from "./components/DisplayAllAccounts";
+import Accounts from "./components/Accounts";
 function App() {
+
   return (
     
     <Routes>
@@ -31,6 +34,7 @@ function App() {
 
       <Route path="/dashboard" element={<Dashboard/>}/>
       <Route path="/checkPassword" element={<CheckPassword/>}/>
+
     </Routes>
   );
 }
