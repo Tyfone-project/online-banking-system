@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "regenerator-runtime/runtime";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 function GlobalFilter({
@@ -124,6 +124,7 @@ function Table({ columns, data }) {
 
 function DisplayAllAccounts() {
   const [data, setData] = useState([]);
+  const [show, setShow] = useState(false);
   const dataRef = useRef();
   dataRef.current = data;
   var custId = sessionStorage.getItem("customerId");
@@ -154,9 +155,9 @@ function DisplayAllAccounts() {
 
   const GetDetails = (rowIndex) => {
     const id = dataRef.current[rowIndex];
-    console.log(id.id);
+    console.log(id.accountNo);
 
-    navigate("/accounts/confirmPin" + id.id);
+    // navigate("/accounts/confirmPin" + id.id);
   };
 
   const columns = React.useMemo(
@@ -209,17 +210,36 @@ function DisplayAllAccounts() {
   };
 
   return (
-    <div>
-      <Table columns={columns} data={data1} />
-      <Button
-        variant="primary"
-        type="submit"
-        className="w-100"
-        onClick={(e) => createAccount(e)}
-      >
-        Add New Account
+    <>
+      <Button variant="primary" onClick={()=>setShow(true)}>
+        Launch demo modal
       </Button>
-    </div>
+      <Modal show={show} onHide={()=>setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={()=>setShow(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={()=>setShow(false)}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <div>
+        <Table columns={columns} data={data1} />
+        <Button
+          variant="primary"
+          type="submit"
+          className="w-100"
+          onClick={(e) => createAccount(e)}
+        >
+          Add New Account
+        </Button>
+      </div>
+    </>
   );
 }
 export default DisplayAllAccounts;

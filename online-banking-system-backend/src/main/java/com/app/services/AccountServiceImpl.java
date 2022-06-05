@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,8 @@ import com.app.dao.AccountRepositry;
 import com.app.dao.TransactionRepositry;
 import com.app.dao.UserRepository;
 import com.app.dto.AccountDto;
+import com.app.dto.SignInResponse;
+import com.app.jwt_utils.JwtUtils;
 import com.app.pojos.Account;
 import com.app.pojos.AccountType;
 import com.app.pojos.Transaction;
@@ -31,6 +34,9 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Autowired
 	private TransactionRepositry transactionRepo;
+	
+	@Autowired
+	private JwtUtils jwtUtils;
 
 	@Override
 	public Account transferFunds(long senderAccountNumber, long receiverAccountNumber, BigDecimal amountToTransfer,
@@ -59,17 +65,19 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public String saveAccount(AccountDto request, Principal principal) {
-		System.out.println(request.getPin()+" "+request.getAccountType());
-		long custId = Long.parseLong(principal.getName());
-		User user  = userRepo.findById(custId).orElseThrow(
-				() -> new RuntimeException("No customer exists with customer id: " + custId));
-		
-		Account account= new Account(request.getPin(),BigDecimal.ZERO,AccountType.valueOf(request.getAccountType().toUpperCase()), user);
-		
-		Account acc = accountRepo.save(account);	
-		return "Account with Id: " + acc.getAccountNo() + " created successfully";
-	}
+    public String saveAccount(AccountDto request, Principal principal) {
+        System.out.println(request.getPin() + " " + request.getAccountType());
+        long custId = Long.parseLong(principal.getName());
+        User user = userRepo.findById(custId)
+                .orElseThrow(() -> new RuntimeException("No customer exists with customer id: " + custId));
+
+        Account account = new Account(request.getPin(), BigDecimal.ZERO,
+                AccountType.valueOf(request.getAccountType().toUpperCase()), user);
+
+        account.setPin(BCrypt.hashpw(account.getPin(), BCrypt.gensalt()));
+        Account acc = accountRepo.save(account);
+        return "Account with Id: " + acc.getAccountNo() + " created successfully";
+    }
  
 	@Override
 	public List<Account> retrieveAllAccountsByCustomerId(Principal principal) {
@@ -77,5 +85,16 @@ public class AccountServiceImpl implements IAccountService {
 		return accountRepo.findByCustomerId(custId);
 	}
 
+	@Override
+    public SignInResponse loginToAccount(long accountNumber, String pin) {
+
+        Account loginAccountObject = accountRepo.findByAccountNo(accountNumber).orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
+        System.out.println(loginAccountObject);
+        boolean isPresent = BCrypt.checkpw(pin, loginAccountObject.getPin());
+        if(isPresent) {
+        	return new SignInResponse(jwtUtils.generateJwtTokenWithAccNo(accountNumber));
+        }
+        throw new RuntimeException("Invalid Pin!!!");
+    }
 
 }
