@@ -6,33 +6,35 @@ import axios from "axios";
 import 'regenerator-runtime/runtime'
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
+import { FaUser } from 'react-icons/fa';
+import profile from '../images/profile.jpg';
 
-function GlobalFilter({
-    preGlobalFilteredRows,
-    globalFilter,
-    setGlobalFilter,
-}) {
-    const count = preGlobalFilteredRows.length
-    const [value, setValue] = React.useState(globalFilter)
-    const onChange = useAsyncDebounce(value => {
-        setGlobalFilter(value || undefined)
-    }, 200)
+// function GlobalFilter({
+//     preGlobalFilteredRows,
+//     globalFilter,
+//     setGlobalFilter,
+// }) {
+//     const count = preGlobalFilteredRows.length
+//     const [value, setValue] = React.useState(globalFilter)
+//     const onChange = useAsyncDebounce(value => {
+//         setGlobalFilter(value || undefined)
+//     }, 200)
 
-    return (
-        <span>
-            Search:{' '}
-            <input
-                className="form-control"
-                value={value || ""}
-                onChange={e => {
-                    setValue(e.target.value);
-                    onChange(e.target.value);
-                }}
-                placeholder={`${count} records...`}
-            />
-        </span>
-    )
-} 
+//     return (
+//         <span>
+//             Search:{' '}
+//             <input
+//                 className="form-control"
+//                 value={value || ""}
+//                 onChange={e => {
+//                     setValue(e.target.value);
+//                     onChange(e.target.value);
+//                 }}
+//                 placeholder={`${count} records...`}
+//             />
+//         </span>
+//     )
+// } 
 function DefaultColumnFilter({
     column: { filterValue, preFilteredRows, setFilter },
 }) {
@@ -52,7 +54,6 @@ function DefaultColumnFilter({
 function Table({ columns, data }) {
     const defaultColumn = React.useMemo(
         () => ({
-           
             Filter: DefaultColumnFilter,
         }),
         []
@@ -77,12 +78,12 @@ function Table({ columns, data }) {
     )
     return (
         <div>
-            {<GlobalFilter
+            {/* {<GlobalFilter
                 preGlobalFilteredRows={preGlobalFilteredRows}
                 globalFilter={state.globalFilter}
                 setGlobalFilter={setGlobalFilter}
-            />}
-            <table className="table" {...getTableProps()}>
+            />} */}
+            <table className="table " {...getTableProps()}>
                 <thead>
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
@@ -110,7 +111,7 @@ function Table({ columns, data }) {
                 </tbody>
             </table>
             <br />
-            
+
         </div>
     )
 }
@@ -120,11 +121,11 @@ function DisplayAllAccounts() {
     const [data, setData] = useState([]);
     const dataRef = useRef();
     dataRef.current = data;
-    var custId=sessionStorage.getItem("customerId");
+    var custId = sessionStorage.getItem("customerId");
 
     useEffect(() => {
 
-        axios.get('http://localhost:8080/accounts/'+custId, {
+        axios.get('http://localhost:8080/accounts/17741870521', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem("tokenId")
@@ -152,7 +153,7 @@ function DisplayAllAccounts() {
         const id = dataRef.current[rowIndex];
         console.log(id.id)
 
-       navigate("/accounts/confirmPin" + id.id)
+        navigate("/accounts/confirmPin" + id.id)
     };
 
     const columns = React.useMemo(
@@ -163,7 +164,7 @@ function DisplayAllAccounts() {
                 columns: [
                     {
                         Header: 'Account No',
-                        accessor: 'accountNo',
+                        accessor: 'accountNo'
 
                     },
                     {
@@ -188,7 +189,7 @@ function DisplayAllAccounts() {
                                         </button>
                                     </span>
                                     &nbsp;
-                                    
+
                                 </div>
                             );
                         },
@@ -200,20 +201,41 @@ function DisplayAllAccounts() {
         []
     )
     const navigate = useNavigate();
-    const createAccount=(e)=>{
+    const createAccount = (e) => {
         e.preventDefault();
         navigate('/addAccount');
     }
 
+     const Greeting = () => {
+        const hour = new Date().getHours();
+        const welcomeTypes = ["Good morning", "Good afternoon", "Good evening"];
+        let welcomeText = "";
+        if (hour < 12)
+            welcomeText = welcomeTypes[0];
+        else if (hour < 18)
+            welcomeText = welcomeTypes[1];
+        else
+            welcomeText = welcomeTypes[2];
+            return <span>{welcomeText}!</span>
+
+    }
+
     return (
         <div>
+            <p className="mx-5 p-3 font-weight-bold display-6">
+                <img src={profile} width="100px" height="100px" />
+                &nbsp;&nbsp;Hello User, <Greeting/></p>
 
-        <Table columns={columns} data={data1} />
-        <Button variant="primary" type="submit" className="w-100" onClick={(e)=> createAccount(e)}>
-        Add New Account
-      </Button>
-     
-      </div>
+            <div className='p-3 mx-5 my-3'>
+                <Table columns={columns} data={data1} />
+            </div>
+            <div className="col-md-12 text-center">
+                <Button variant="primary" type="submit" className="w-25 " onClick={(e) => createAccount(e)}>
+                    Add New Account
+                </Button>
+            </div>
+        </div>
+
     )
 }
 export default DisplayAllAccounts;
