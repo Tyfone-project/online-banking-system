@@ -7,6 +7,8 @@ import Signup from "./components/Signup";
 
 import Dashboard from "./components/Dashboard";
 import CheckPassword from "./components/CheckPassword";
+import DisplayAllAccounts from "./components/DisplayAllAccounts";
+import Accounts from "./components/Accounts";
 function App() {
 
   return (
@@ -16,9 +18,13 @@ function App() {
         <Route index element={<Login/>} />
         <Route path="login" element={<Login/>} />
         <Route path="signup" element={<Signup/>} />
+        <Route path="/customer/addAccount" element={<Accounts/>}/>
       </Route>
+      <Route path="/customer/accounts" element={<DisplayAllAccounts/>}/>
+      
       <Route path="/dashboard" element={<Dashboard/>}/>
       <Route path="/checkPassword" element={<CheckPassword/>}/>
+
     </Routes>
   );
 }

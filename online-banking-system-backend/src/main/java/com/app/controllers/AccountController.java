@@ -29,10 +29,9 @@ public class AccountController {
 	@Autowired
     private ITransactionImpl transactionService;
 
-	@GetMapping("/{customerId}")
-	public ResponseEntity<?> accountList(Principal principal, @PathVariable("customerId") String customerId) {
-		System.out.println(customerId);
-		return new ResponseEntity<>(accountService.retrieveAllAccountsByCustomerId(customerId), HttpStatus.OK);
+	@GetMapping
+	public ResponseEntity<?> accountList(Principal principal) {
+		return new ResponseEntity<>(accountService.retrieveAllAccountsByCustomerId(principal), HttpStatus.OK);
 	}
 
 	@PostMapping("/addAccount")

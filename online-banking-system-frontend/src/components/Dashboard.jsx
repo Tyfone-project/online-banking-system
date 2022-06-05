@@ -1,17 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-import { Outlet } from "react-router-dom";
-
-function Dashboard() {
-  return (
-    <>
-      <Outlet />
-    </>
-  );
-}
-
-export default Dashboard;
-=======
 import { Navbar, Container, Nav, Button, Row, Col, Card } from "react-bootstrap";
 import {
     Link
@@ -53,4 +40,3 @@ function Dashboard() {
     )
 }
 export default Dashboard;
->>>>>>> 281a73b783c22e46906ceeffeb113a6a47c6413c

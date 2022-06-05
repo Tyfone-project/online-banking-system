@@ -12,7 +12,7 @@ public interface IAccountService {
 	
 	public String saveAccount(AccountDto request, Principal principal);
 
-	public List<Account> retrieveAllAccountsByCustomerId(String customerId);
+	public List<Account> retrieveAllAccountsByCustomerId(Principal principal);
 	
 	Account transferFunds(long senderAccountNumber, long receiverAccountNumber, BigDecimal amountToTransfer,
 			LocalDate transferDate);

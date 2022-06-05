@@ -25,7 +25,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
 	private AccountRepositry accountRepo;
 
@@ -41,7 +41,7 @@ public class AccountServiceImpl implements IAccountService {
 
 		Account senderAccountObject = accountRepo.findByAccountNo(senderAccountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
-		
+
 		if (senderAccountObject.getBalance().compareTo(BigDecimal.ZERO) > 0) {
 			senderAccountObject.setBalance(senderAccountObject.getBalance().subtract(amountToTransfer));
 			receiverAccountObject.setBalance(receiverAccountObject.getBalance().add(amountToTransfer));
@@ -57,24 +57,22 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public String saveAccount(AccountDto request, Principal principal) {
-		System.out.println(request.getPin()+" "+request.getAccountType());
+		System.out.println(request.getPin() + " " + request.getAccountType());
 		long custId = Long.parseLong(principal.getName());
-		User user  = userRepo.findById(custId).orElseThrow(
-				() -> new RuntimeException("No customer exists with customer id: " + custId));
-		
-		Account account= new Account(request.getPin(),BigDecimal.ZERO,AccountType.valueOf(request.getAccountType().toUpperCase()), user);
-		
-		Account acc = accountRepo.save(account);	
+		User user = userRepo.findById(custId)
+				.orElseThrow(() -> new RuntimeException("No customer exists with customer id: " + custId));
+
+		Account account = new Account(request.getPin(), BigDecimal.ZERO,
+				AccountType.valueOf(request.getAccountType().toUpperCase()), user);
+
+		Account acc = accountRepo.save(account);
 		return "Account with Id: " + acc.getAccountNo() + " created successfully";
 	}
- 
+
 	@Override
-	public List<Account> retrieveAllAccountsByCustomerId(String customerId) {
-	//	long custId = Long.parseLong(principal.getName());
-		long custId=Long.parseLong(customerId);
-		System.out.println(custId);
+	public List<Account> retrieveAllAccountsByCustomerId(Principal principal) {
+		long custId = Long.parseLong(principal.getName());
 		return accountRepo.findByCustomerId(custId);
 	}
-
 
 }
