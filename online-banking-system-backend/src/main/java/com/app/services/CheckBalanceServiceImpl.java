@@ -14,7 +14,7 @@ public class CheckBalanceServiceImpl implements ICheckBalanceService{
 	public String CheckPassword(int userId, String password) {
 		String authUser = checkBalanceRepository.checkPassword(userId, password);
 		if(authUser == null)
-			return "Invalid UserId or Password";
+			return "Invalid Password";
 		else if(authUser.equals(password)) {
 			double balance = CheckBalance(userId);
 			return "You Balance is : "+balance;

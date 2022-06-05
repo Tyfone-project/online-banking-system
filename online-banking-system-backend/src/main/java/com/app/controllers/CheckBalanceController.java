@@ -18,6 +18,7 @@ public class CheckBalanceController {
 	
 	@PostMapping("/checkPassword")
 	public ResponseEntity<?> checkPassword(@RequestBody CheckBalanceDTO checkBalanceDTO) {
+//		System.out.println(checkBalanceDTO);
 		return new ResponseEntity<>(iCheckBalance.CheckPassword(checkBalanceDTO.getUserId(), checkBalanceDTO.getPassword()), HttpStatus.OK);
 	} //end of checkPassword
 }
