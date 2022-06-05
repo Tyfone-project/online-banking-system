@@ -21,6 +21,7 @@ function App() {
 
       </Route>
       <Route path="accounts/:customerId" element={<DisplayAllAccounts/>}/>
+      <Route path="accounts/confirmPin" element={<ConfirmPin/>}/>
     </Routes>
   );
 }

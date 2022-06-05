@@ -145,7 +145,6 @@ function DisplayAllAccounts() {
     var data1 = data.map(x => ({
         accountNo: x["accountNo"],
         accountType: x["accountType"],
-        balance: x["balance"],
     }))
     console.log('data1', data1);
 
@@ -153,7 +152,7 @@ function DisplayAllAccounts() {
         const id = dataRef.current[rowIndex];
         console.log(id.id)
 
-        navigate("/accounts/confirmPin" + id.id)
+        navigate("/accounts/confirmPin")
     };
 
     const columns = React.useMemo(
@@ -170,11 +169,6 @@ function DisplayAllAccounts() {
                     {
                         Header: 'Account Type',
                         accessor: 'accountType'
-                    },
-
-                    {
-                        Header: 'Account Balance',
-                        accessor: 'balance'
                     },
                     {
                         Header: 'Action',
