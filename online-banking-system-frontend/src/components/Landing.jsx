@@ -13,7 +13,7 @@ function Landing() {
             </div>
           </div>
         </div>
-        <div className="d-none d-md-block col-md-6 col-lg-8 bg-dark">
+        <div className="d-none d-md-block">
           <img src={landing} className="w-100 h-100" />
         </div>
       </div>

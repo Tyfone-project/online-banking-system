@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 
@@ -58,5 +59,8 @@ public class User {
 
 	private String roles;
 
+    @Lob
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
 
 }
