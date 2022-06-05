@@ -13,10 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.app.jwt_utils.JwtUtils;
 
+@Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
@@ -41,7 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 					if (SecurityContextHolder.getContext().getAuthentication() == null) {
 						// create a new Authentication object : UsernamePasswordAuthenticationToken
 						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-								userDetails.getUsername(), userDetails.getPassword());
+								userDetails.getUsername(), userDetails.getPassword(),userDetails.getAuthorities());
 						authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 						SecurityContextHolder.getContext().setAuthentication(authentication);
 					}

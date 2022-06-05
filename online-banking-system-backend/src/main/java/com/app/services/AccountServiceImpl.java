@@ -1,6 +1,7 @@
 package com.app.services;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -55,9 +56,11 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public String saveAccount(AccountDto request) {
-		User user  = userRepo.findById(request.getCustomerId()).orElseThrow(
-				() -> new RuntimeException("No customer exists with customer id: " + request.getCustomerId()));
+	public String saveAccount(AccountDto request, Principal principal) {
+		System.out.println(request.getPin()+" "+request.getAccountType());
+		long custId = Long.parseLong(principal.getName());
+		User user  = userRepo.findById(custId).orElseThrow(
+				() -> new RuntimeException("No customer exists with customer id: " + custId));
 		
 		Account account= new Account(request.getPin(),BigDecimal.ZERO,AccountType.valueOf(request.getAccountType().toUpperCase()), user);
 		
@@ -66,8 +69,11 @@ public class AccountServiceImpl implements IAccountService {
 	}
  
 	@Override
-	public List<Account> retrieveAllAccountsByCustomerId(long customerId) {
-		return accountRepo.findByCustomerId(customerId);
+	public List<Account> retrieveAllAccountsByCustomerId(String customerId) {
+	//	long custId = Long.parseLong(principal.getName());
+		long custId=Long.parseLong(customerId);
+		System.out.println(custId);
+		return accountRepo.findByCustomerId(custId);
 	}
 
 
