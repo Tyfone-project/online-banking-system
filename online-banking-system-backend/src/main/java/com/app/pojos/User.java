@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 
@@ -19,6 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "users")
+
 public class User {
 
 	@Id
@@ -57,8 +59,8 @@ public class User {
 
 	private String roles;
 
-//    @Lob
-//    @Column(name = "profile_picture")
-//    private byte[] profilePicture;
+    @Lob
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
 
 }
