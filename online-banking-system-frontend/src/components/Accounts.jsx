@@ -2,8 +2,11 @@ import { useState } from "react";
 import axios from "axios";
 import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
+import DisplayAllAccounts from "./DisplayAllAccounts";
+import { useNavigate } from 'react-router-dom'
 
 function Accounts() {
+  const navigate = useNavigate();
   const accountDetails = useFormik({
     initialValues: {
       accountType: "",
@@ -62,7 +65,10 @@ function Accounts() {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit" className="w-100">
+        <Button variant="primary" type="submit" className="w-25" onClick={() => navigate("/customer/accounts")}>
+          Back
+        </Button> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+        <Button variant="primary" type="submit" className="w-50">
           Create Account
         </Button>
       </Form>
