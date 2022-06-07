@@ -45,6 +45,7 @@ function TransferFunds() {
         },
     });
 
+    var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
     return (
         <>
 
@@ -62,8 +63,10 @@ function TransferFunds() {
                             <Form.Control
                                 name="senderAccountNumber"
                                 type="text"
-                                placeholder="Enter Sender Account Number"
-                                value={userAccountDetails.values.senderAccountNumber}
+                                // placeholder="Enter Sender Account Number"
+                                disabled
+                                // value={userAccountDetails.values.senderAccountNumber}
+                                value={accountNumber}
                                 onChange={userAccountDetails.handleChange}
                                 onBlur={userAccountDetails.handleBlur}
                             />

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dto.AccountDto;
 import com.app.dto.TransferFundsDto;
 import com.app.services.IAccountService;
-import com.app.services.ITransactionImpl;
+import com.app.services.ITransactionService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -27,7 +27,7 @@ public class AccountController {
 	private IAccountService accountService;
 
 	@Autowired
-    private ITransactionImpl transactionService;
+    private ITransactionService transactionService;
 
 	@GetMapping
 	public ResponseEntity<?> accountList(Principal principal) {

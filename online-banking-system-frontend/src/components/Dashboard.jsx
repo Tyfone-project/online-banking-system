@@ -1,42 +1,37 @@
 import React from "react";
-import { Navbar, Container, Nav, Button, Row, Col, Card } from "react-bootstrap";
-import {
-    Link
-} from "react-router-dom"
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import "./Dashboard.css";
+
 function Dashboard() {
-    return (
-        <>
-            <Navbar bg="light" expand="lg">
-                <Container>
-                    <Navbar.Brand>#CompanyName</Navbar.Brand>
-                    <Nav>
-                        <Nav.Item>
-                            <Nav.Link><Button variant="secondary">Accounts</Button></Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link><Button variant="primary">Profile</Button></Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link><Button variant="danger">Logout</Button></Nav.Link>
-                        </Nav.Item>
-                    </Nav>
-                </Container>
-            </Navbar><br /><br />
-
-            <Card border = "danger" style={{ marginTop: "5%", marginLeft: "24%", width: "50%", height:"250px",}}>
-                <Container style={{paddingLeft : "20%", paddingTop:"10%"}}>
-                    <Row className="justify-content-center">
-                        <Col><Link to="/checkPassword"><Button>Check Balance</Button></Link></Col>
-                        <Col><Button>Transfer Money</Button></Col>
-                    </Row><br /><br />
-                    <Row>
-                        <Col><Button>Generate Report</Button></Col>
-                        <Col><Button>User Profile</Button></Col>
-                    </Row>
-                </Container>
-            </Card>
-
-        </>
-    )
+  return (
+    <>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">Account Number</Navbar.Brand>
+          <Nav className="gap-2">
+            {/* <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#features">Features</Nav.Link> */}
+            <Nav.Link href="#pricing">Log Out</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+      <section className="p-5">
+        <div className="d-flex flex-column justify-content-center align-items-center">
+          <div className="bg-dark bg-gradient p-5 rounded-3 bg-light">
+            <div>
+              <button className="btn-primary">Check Balance</button>
+              <button className="btn-primary">Transfer Money</button>
+            </div>
+            <div>
+              <button className="btn-primary">Add Money</button>
+              <button className="btn-primary">Transaction History</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
+
 export default Dashboard;

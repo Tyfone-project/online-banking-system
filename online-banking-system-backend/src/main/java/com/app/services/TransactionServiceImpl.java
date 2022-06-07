@@ -11,7 +11,7 @@ import com.app.pojos.Transaction;
 
 @Service
 @Transactional
-public class TransactionServiceImpl implements ITransactionImpl {
+public class TransactionServiceImpl implements ITransactionService {
 
 	@Autowired
 	private TransactionRepositry transactionRepo;
