@@ -34,7 +34,7 @@ public class Account {
     @GenericGenerator(name = "accno_gen", strategy = "com.app.pojos.AccountNoGeneration")
 	@GeneratedValue(generator = "accno_gen")
     @Column(name = "account_no")
-    private String accountNo;
+    private long accountNo;
     
 
     @Column(nullable = false)

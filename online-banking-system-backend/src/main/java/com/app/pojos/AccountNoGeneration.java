@@ -11,7 +11,7 @@ public class AccountNoGeneration implements IdentifierGenerator{
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
 		long count = (long)session.createQuery("select COUNT(a) from Account a").getSingleResult() + 1;
-		return "12000000000"+count;
+		return Long.parseLong("12000000000"+count);
 	}
 
 }

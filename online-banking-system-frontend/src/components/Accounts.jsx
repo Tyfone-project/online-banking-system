@@ -57,6 +57,7 @@ function Accounts() {
           <Form.Label>Pin</Form.Label>
           <Form.Control
             type="password"
+            name="pin"
             onChange={accountDetails.handleChange}
           />
         </Form.Group>

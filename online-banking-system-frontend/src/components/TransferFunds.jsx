@@ -29,13 +29,18 @@ function TransferFunds() {
                 .required("Amount is required"),
         }),
         onSubmit: () => {
-            axios.post("http://localhost:8080/account/transferfunds", {
+            axios.post("http://localhost:8080/api/accounts/transferfunds", {
                 senderAccountNumber: userAccountDetails.values.senderAccountNumber,
                 receiverAccountNumber: userAccountDetails.values.receiverAccountNumber,
                 amountToTransfer: userAccountDetails.values.amountToTransfer,
                 dateOfTransaction: userAccountDetails.values.dateOfTransaction
 
-            }
+            },
+                {
+                    headers: {
+                        Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
+                    },
+                }
             ).then(res => console.log(res.data)).catch(err => console.log(err));
         },
     });

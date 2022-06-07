@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
 	private AccountRepositry accountRepo;
 
@@ -60,22 +61,35 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public String saveAccount(AccountDto request, Principal principal) {
-		System.out.println(request.getPin()+" "+request.getAccountType());
+		System.out.println(request.getPin() + " " + request.getAccountType());
 		long custId = Long.parseLong(principal.getName());
-		User user  = userRepo.findById(custId).orElseThrow(
-				() -> new RuntimeException("No customer exists with customer id: " + custId));
-		
-		Account account= new Account(request.getPin(),BigDecimal.ZERO,AccountType.valueOf(request.getAccountType().toUpperCase()), user);
-		
-		Account acc = accountRepo.save(account);	
+		User user = userRepo.findById(custId)
+				.orElseThrow(() -> new RuntimeException("No customer exists with customer id: " + custId));
+
+		Account account = new Account(request.getPin(), BigDecimal.ZERO,
+				AccountType.valueOf(request.getAccountType().toUpperCase()), user);
+
+		account.setPin(BCrypt.hashpw(account.getPin(), BCrypt.gensalt()));
+		Account acc = accountRepo.save(account);
 		return "Account with Id: " + acc.getAccountNo() + " created successfully";
 	}
- 
+
 	@Override
 	public List<Account> retrieveAllAccountsByCustomerId(Principal principal) {
 		long custId = Long.parseLong(principal.getName());
 		return accountRepo.findByCustomerId(custId);
 	}
 
+	@Override
+	public Account loginToAccount(long accountNumber, String pin) {
+		
+		Account loginAccountObject = accountRepo.findByAccountNo(accountNumber).orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
+		System.out.println(loginAccountObject);
+		boolean isPresent = BCrypt.checkpw(pin, loginAccountObject.getPin());
+		if(isPresent) {
+			return loginAccountObject;
+		}
+		throw new RuntimeException("Invalid Pin!!!");
+	}
 
 }

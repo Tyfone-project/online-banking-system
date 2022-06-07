@@ -17,4 +17,5 @@ public interface IAccountService {
 	Account transferFunds(long senderAccountNumber, long receiverAccountNumber, BigDecimal amountToTransfer,
 			LocalDate transferDate);
 
+	public Account loginToAccount(long accountNumber, String pin);
 }
