@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 
+import com.app.dto.AccountDashboardDto;
 import com.app.dto.AccountDto;
 import com.app.dto.SignInResponse;
 import com.app.dto.UserDto;
@@ -24,6 +25,8 @@ public interface IAccountService {
 			LocalDate transferDate);
 	
 	public SignInResponse loginToAccount(long accountNumber, String pin);
+	
+	public AccountDashboardDto getAccountDashboard(long accountNumber);
 
 	
 }

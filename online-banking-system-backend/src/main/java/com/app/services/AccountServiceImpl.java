@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.app.dao.AccountRepositry;
 import com.app.dao.TransactionRepositry;
 import com.app.dao.UserRepository;
+import com.app.dto.AccountDashboardDto;
 import com.app.dto.AccountDto;
 import com.app.dto.SignInResponse;
 import com.app.dto.UserAccountDto;
@@ -106,6 +107,13 @@ public class AccountServiceImpl implements IAccountService {
 			return new SignInResponse(jwtUtils.generateJwtTokenWithAccNo(accountNumber));
 		}
 		throw new RuntimeException("Invalid Pin!!!");
+	}
+
+	@Override
+	public AccountDashboardDto getAccountDashboard(long accountNumber) {
+		Account account = accountRepo.findByAccountNo(accountNumber)
+				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
+		return new AccountDashboardDto(account.getBalance(), transactionRepo.findRecentTransactions(accountNumber), transactionRepo.getMoneySpentThisMonth(accountNumber));
 	}
 
 }

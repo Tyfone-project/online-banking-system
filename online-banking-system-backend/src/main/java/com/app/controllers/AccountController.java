@@ -33,6 +33,11 @@ public class AccountController {
 	public ResponseEntity<?> accountList(Principal principal) {
 		return new ResponseEntity<>(accountService.retrieveAllAccountsByCustomerId(principal), HttpStatus.OK);
 	}
+	
+	@GetMapping("/{accountNumber}")
+	public ResponseEntity<?> accountDashboard(@PathVariable long accountNumber) {
+		return new ResponseEntity<>(accountService.getAccountDashboard(accountNumber), HttpStatus.OK);
+	}
 
 	
 	@PostMapping("/addAccount")
