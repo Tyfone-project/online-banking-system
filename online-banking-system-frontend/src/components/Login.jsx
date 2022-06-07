@@ -20,8 +20,11 @@ function Signin() {
       axios
         .post("http://localhost:8080/api/signin", { ...values })
         .then((res) => {
-          if (res.status === 200) sessionStorage.setItem("tokenId", res.data.tokenId);
-          navigate("/customer/accounts");
+          if (res.status === 200){ 
+          sessionStorage.setItem("tokenId", res.data.tokenId);
+          sessionStorage.setItem("customerId",values.customerId);
+         
+          navigate("/customer/accounts");}
         });
     },
   });

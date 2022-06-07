@@ -96,6 +96,9 @@ function DisplayAllAccounts() {
     const dataRef = useRef();
     dataRef.current = data;
 
+    const custId = sessionStorage.getItem("customerId");
+
+    console.log("custId", custId);
     useEffect(() => {
         axios
             .get("http://localhost:8080/api/accounts", {
@@ -104,27 +107,38 @@ function DisplayAllAccounts() {
                 },
             })
             .then((res) => {
-                //console.log("res ", res.data);
                 setData(res.data);
                 console.log("res ", res.data);
+                //console.log(dataRef.current[0].user.firstName);
             })
             .catch((err) => {
                 console.error(err);
             });
     }, []);
     console.log("data", data);
+    let acc = new Array();
 
-    var data1 = data.map((x) => ({
+    acc = data.accounts;
+
+    var u= data.user;
+    console.log("accounts", data.accounts);
+    console.log("user", u);
+    console.log("acc", acc);
+
+    var data1 = acc.map((x) => ({
         accountNo: x["accountNo"],
         accountType: x["accountType"],
+    
     }));
     console.log("data1", data1);
+
+
 
     const GetDetails = (rowIndex) => {
         const id = dataRef.current[rowIndex];
         console.log(id.id);
 
-        navigate("/accounts/confirmPin" + id.id);
+        navigate("/customer/confirmPin");
     };
 
     const columns = React.useMemo(
@@ -175,7 +189,7 @@ function DisplayAllAccounts() {
     const Greeting = () => {
         var welcomeText = "";
         var welcomeType = ["Good morning", "Good afternoon", "Good evening"];
-        var hour = new Date().getHours;
+        var hour = new Date().getHours();
         if (hour < 12)
             welcomeText = welcomeType[0];
         else if (hour < 18)
@@ -187,9 +201,10 @@ function DisplayAllAccounts() {
     }
     return (
         <div>
+
             <div className="p-3 display-6 font-weight-bold font-italic mx-5">
-                {/* <img src={`data:image/jpeg;base64,${data.profilePicture}`} alt="" height={"150px"} width={"100px"} /> */}
-                Hello ,{<Greeting/>}!
+                {/* <img src={`data:image/jpeg;base64,${data.user.profilePicture}`} alt="" height={"100px"} width={"100px"} />  */}
+                {/* &nbsp;&nbsp;&nbsp;&nbsp; Hello {data.user},{<Greeting />}! */}
             </div>
 
             <div className="p-3 mx-5 my-4">
