@@ -14,6 +14,7 @@ import Dashboard from "./components/Dashboard";
 import CheckPassword from "./components/CheckPassword";
 import DisplayAllAccounts from "./components/DisplayAllAccounts";
 import Accounts from "./components/Accounts";
+import ConfirmPin from "./components/ConfirmPin";
 function App() {
 
   return (
@@ -34,6 +35,7 @@ function App() {
 
       <Route path="/dashboard" element={<Dashboard/>}/>
       <Route path="/checkPassword" element={<CheckPassword/>}/>
+      <Route path="/customer/confirmPin" element={<ConfirmPin/>}/>
 
     </Routes>
   );

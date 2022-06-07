@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,6 +17,7 @@ import com.app.dao.UserRepository;
 import com.app.dto.AccountDto;
 import com.app.dto.SignInResponse;
 import com.app.jwt_utils.JwtUtils;
+import com.app.dto.UserDto;
 import com.app.pojos.Account;
 import com.app.pojos.AccountType;
 import com.app.pojos.Transaction;
@@ -65,24 +67,24 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-    public String saveAccount(AccountDto request, Principal principal) {
-        System.out.println(request.getPin() + " " + request.getAccountType());
-        long custId = Long.parseLong(principal.getName());
-        User user = userRepo.findById(custId)
-                .orElseThrow(() -> new RuntimeException("No customer exists with customer id: " + custId));
-
-        Account account = new Account(request.getPin(), BigDecimal.ZERO,
-                AccountType.valueOf(request.getAccountType().toUpperCase()), user);
-
-        account.setPin(BCrypt.hashpw(account.getPin(), BCrypt.gensalt()));
-        Account acc = accountRepo.save(account);
-        return "Account with Id: " + acc.getAccountNo() + " created successfully";
-    }
- 
-	@Override
-	public List<Account> retrieveAllAccountsByCustomerId(Principal principal) {
+	public String saveAccount(AccountDto request, Principal principal) {
+		System.out.println(request.getPin() + " " + request.getAccountType());
 		long custId = Long.parseLong(principal.getName());
-		return accountRepo.findByCustomerId(custId);
+		User user = userRepo.findById(custId)
+				.orElseThrow(() -> new RuntimeException("No customer exists with customer id: " + custId));
+
+		Account account = new Account(request.getPin(), BigDecimal.ZERO,
+				AccountType.valueOf(request.getAccountType().toUpperCase()), user);
+		account.setPin(BCrypt.hashpw(account.getPin(), BCrypt.gensalt()));
+		Account acc = accountRepo.save(account);
+		return "Account with Id: " + acc.getAccountNo() + " created successfully";
+	}
+
+	@Override
+	public UserDto retrieveAllAccountsByCustomerId(Principal principal) {
+		long custId = Long.parseLong(principal.getName());
+		Optional<User> user=userRepo.findById(custId);
+		return new UserDto(accountRepo.findByCustomerId(custId),user);
 	}
 
 	@Override

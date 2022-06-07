@@ -34,6 +34,7 @@ public class AccountController {
 		return new ResponseEntity<>(accountService.retrieveAllAccountsByCustomerId(principal), HttpStatus.OK);
 	}
 
+	
 	@PostMapping("/addAccount")
 	public ResponseEntity<?> addAccount(@RequestBody AccountDto request, Principal principal) {
 		System.out.println(request.getPin());
