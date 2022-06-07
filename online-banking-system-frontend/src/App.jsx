@@ -9,12 +9,10 @@ import TransactionReport from "./components/TransactionReport";
 import DisplayAllAccounts from "./components/DisplayAllAccounts";
 import Accounts from "./components/Accounts";
 import Dashboard from "./components/Dashboard";
-
-import Dashboard from "./components/Dashboard";
 import CheckPassword from "./components/CheckPassword";
-import DisplayAllAccounts from "./components/DisplayAllAccounts";
-import Accounts from "./components/Accounts";
-import ConfirmPin from "./components/ConfirmPin";
+import ConfirmPin from "./components/ConfirmPin"
+import DisplayAccounts from "./components/DisplayAccounts";
+
 function App() {
 
   return (
@@ -26,7 +24,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
       </Route>
-      <Route path="/customer" element={<Dashboard />}>
+      <Route path="/customer" element={<DisplayAccounts />}>
         <Route path="account/transferfunds" element={<TransferFunds />} />
         <Route path="account/transactionslist" element={<TransactionReport />} />
         <Route path="addAccount" element={<Accounts />} />

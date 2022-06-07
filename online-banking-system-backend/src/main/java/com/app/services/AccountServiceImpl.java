@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,6 +17,7 @@ import com.app.dao.TransactionRepositry;
 import com.app.dao.UserRepository;
 import com.app.dto.AccountDto;
 import com.app.dto.SignInResponse;
+import com.app.dto.UserAccountDto;
 import com.app.jwt_utils.JwtUtils;
 import com.app.dto.UserDto;
 import com.app.pojos.Account;
@@ -36,7 +38,7 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Autowired
 	private TransactionRepositry transactionRepo;
-	
+
 	@Autowired
 	private JwtUtils jwtUtils;
 
@@ -83,20 +85,26 @@ public class AccountServiceImpl implements IAccountService {
 	@Override
 	public UserDto retrieveAllAccountsByCustomerId(Principal principal) {
 		long custId = Long.parseLong(principal.getName());
-		Optional<User> user=userRepo.findById(custId);
-		return new UserDto(accountRepo.findByCustomerId(custId),user);
+		User user = userRepo.findById(custId).orElseThrow(() -> new RuntimeException("User not found"));
+		List<Account> accounts = accountRepo.findByCustomerId(custId);
+
+		return new UserDto(
+				accounts.stream().map((acc) -> new UserAccountDto(acc.getAccountNo(), acc.getAccountType().toString()))
+						.collect(Collectors.toList()),user.getFirstName()+" "+user.getLastName(),
+				user.getProfilePicture());
 	}
 
 	@Override
-    public SignInResponse loginToAccount(long accountNumber, String pin) {
+	public SignInResponse loginToAccount(long accountNumber, String pin) {
 
-        Account loginAccountObject = accountRepo.findByAccountNo(accountNumber).orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
-        System.out.println(loginAccountObject);
-        boolean isPresent = BCrypt.checkpw(pin, loginAccountObject.getPin());
-        if(isPresent) {
-        	return new SignInResponse(jwtUtils.generateJwtTokenWithAccNo(accountNumber));
-        }
-        throw new RuntimeException("Invalid Pin!!!");
-    }
+		Account loginAccountObject = accountRepo.findByAccountNo(accountNumber)
+				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
+		System.out.println(loginAccountObject);
+		boolean isPresent = BCrypt.checkpw(pin, loginAccountObject.getPin());
+		if (isPresent) {
+			return new SignInResponse(jwtUtils.generateJwtTokenWithAccNo(accountNumber));
+		}
+		throw new RuntimeException("Invalid Pin!!!");
+	}
 
 }
