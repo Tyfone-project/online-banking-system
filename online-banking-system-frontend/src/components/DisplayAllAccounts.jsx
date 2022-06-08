@@ -1,17 +1,11 @@
 import React from "react";
-import {
-    useTable,
-    useFilters,
-    useGlobalFilter,
-    useAsyncDebounce,
-} from "react-table";
+import { useTable, useFilters, useGlobalFilter } from "react-table";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import "regenerator-runtime/runtime";
-import { Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
+import NavigationBar from "./NavigationBar"
 
 function DefaultColumnFilter({
     column: { filterValue, preFilteredRows, setFilter },
@@ -19,14 +13,18 @@ function DefaultColumnFilter({
     const count = preFilteredRows.length;
 
     return (
+        <div className=" d-flex container w-50">
         <input
             className="form-control"
             value={filterValue || ""}
+            
             onChange={(e) => {
                 setFilter(e.target.value || undefined);
             }}
             placeholder={`Search ${count} records...`}
+            
         />
+        </div>
     );
 }
 function Table({ columns, data }) {
@@ -41,10 +39,8 @@ function Table({ columns, data }) {
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow,
-        state,
-        preGlobalFilteredRows,
-        setGlobalFilter,
+        prepareRow
+
     } = useTable(
         {
             columns,
@@ -57,8 +53,8 @@ function Table({ columns, data }) {
     return (
         <div>
 
-            <table className="table" {...getTableProps()}>
-                <thead>
+            <table className="table table-bordered text-center" {...getTableProps()}>
+                <thead >
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) => (
@@ -71,8 +67,8 @@ function Table({ columns, data }) {
                         </tr>
                     ))}
                 </thead>
-                <tbody {...getTableBodyProps()}>
-                    {rows.map((row, i) => {
+                <tbody className="font-weight-bold" {...getTableBodyProps()}>
+                    {rows.map((row) => {
                         prepareRow(row);
                         return (
                             <tr {...row.getRowProps()}>
@@ -92,13 +88,13 @@ function Table({ columns, data }) {
 }
 
 function DisplayAllAccounts() {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
+    const [accounts, setAccounts] = useState([]);
+    const [user, setUser] = useState("");
+
     const dataRef = useRef();
-    dataRef.current = data;
+    dataRef.current = accounts;
 
-    const custId = sessionStorage.getItem("customerId");
-
-    console.log("custId", custId);
     useEffect(() => {
         axios
             .get("http://localhost:8080/api/accounts", {
@@ -108,35 +104,25 @@ function DisplayAllAccounts() {
             })
             .then((res) => {
                 setData(res.data);
+                setAccounts(res.data.accounts);
+                setUser(res.data.user);
                 console.log("res ", res.data);
-                //console.log(dataRef.current[0].user.firstName);
             })
             .catch((err) => {
                 console.error(err);
             });
     }, []);
-    console.log("data", data);
-    let acc = new Array();
 
-    acc = data.accounts;
+    if (accounts.length > 0) {
+        var data1 = accounts.map((x) => ({
+            accountNo: x["accountNo"],
+            accountType: x["accountType"],
 
-    var u= data.user;
-    console.log("accounts", data.accounts);
-    console.log("user", u);
-    console.log("acc", acc);
-
-    var data1 = acc.map((x) => ({
-        accountNo: x["accountNo"],
-        accountType: x["accountType"],
-    
-    }));
-    console.log("data1", data1);
-
-
-
+        }));
+    }
     const GetDetails = (rowIndex) => {
         const id = dataRef.current[rowIndex];
-        console.log(id.id);
+        console.log("id", id);
 
         navigate("/customer/confirmPin");
     };
@@ -144,7 +130,7 @@ function DisplayAllAccounts() {
     const columns = React.useMemo(
         () => [
             {
-                Header: "Account Details",
+                Header: "ACCOUNT DETAILS",
                 columns: [
                     {
                         Header: "Account No",
@@ -164,6 +150,7 @@ function DisplayAllAccounts() {
                                 <div>
                                     <span>
                                         <button
+                                            type="button"
                                             className="btn btn-info"
                                             onClick={() => GetDetails(rowIdx)}
                                         >
@@ -199,16 +186,31 @@ function DisplayAllAccounts() {
 
         return welcomeText;
     }
+
+    const DisplayMessage = () => {
+        return <h3 className="text-center">You have no accounts to display, click on below button to add account!!</h3>
+    }
+    const Validate = () => {
+        if (accounts.length > 0) {
+            return <Table columns={columns} data={data1} />
+        }
+        else {
+            return <DisplayMessage/>
+        }
+    }
     return (
         <div>
-
-            <div className="p-3 display-6 font-weight-bold font-italic mx-5">
-                {/* <img src={`data:image/jpeg;base64,${data.user.profilePicture}`} alt="" height={"100px"} width={"100px"} />  */}
-                {/* &nbsp;&nbsp;&nbsp;&nbsp; Hello {data.user},{<Greeting />}! */}
+            <NavigationBar/>
+            <div className="p-3 display-6 font-weight-bold font-italic mx-5 my-5">
+                <img src={`data:image/jpeg;base64,${user.profilePicture}`} alt="" height={"100px"} width={"100px"} />
+                &nbsp;&nbsp;&nbsp;&nbsp; Hello {user.firstName},{<Greeting />}!
+                   
             </div>
 
-            <div className="p-3 mx-5 my-4">
-                <Table columns={columns} data={data1} />
+            <div className="p-3 container justify-content-center" >
+
+                <Validate />
+
             </div>
             <div className="text-center">
                 <Button

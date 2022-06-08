@@ -25,6 +25,7 @@ function Accounts() {
         )
         .then((response) => {
           alert("Account created successfully!!");
+          navigate('/customer/accounts')
           console.log(response.data);
         })
         .catch((err) => console.log(err));

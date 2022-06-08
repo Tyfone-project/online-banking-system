@@ -33,7 +33,6 @@ public class AccountController {
 	public ResponseEntity<?> accountList(Principal principal) {
 		return new ResponseEntity<>(accountService.retrieveAllAccountsByCustomerId(principal), HttpStatus.OK);
 	}
-
 	
 	@PostMapping("/addAccount")
 	public ResponseEntity<?> addAccount(@RequestBody AccountDto request, Principal principal) {
@@ -41,6 +40,7 @@ public class AccountController {
 		return new ResponseEntity<>(accountService.saveAccount(request, principal), HttpStatus.CREATED);
 	}
 
+	
 	@PostMapping("/transferfunds")
 	public ResponseEntity<?> processTransferFunds(@RequestBody TransferFundsDto transferFundsDetails) {
 		try {
