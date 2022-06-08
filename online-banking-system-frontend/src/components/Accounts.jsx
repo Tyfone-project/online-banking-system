@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
-import DisplayAccounts from "./DisplayAllAccounts";
+
 import { useNavigate } from 'react-router-dom'
 
 function Accounts() {
@@ -68,7 +68,7 @@ function Accounts() {
 
         <Button variant="primary" type="submit" className="w-25" onClick={() => navigate("/customer/accounts")}>
           Back
-        </Button> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+        </Button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <Button variant="primary" type="submit" className="w-50">
           Create Account
         </Button>

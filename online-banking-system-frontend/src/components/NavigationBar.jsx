@@ -12,7 +12,7 @@ const NavigationBar = () => {
 
 
     return (
-        <nav className="navbar navbar-expand-lg py-2 fixed-top" style={{ backgroundColor: "Black" }}>
+        <nav className="navbar navbar-expand-lg py-0 fixed-top" style={{ backgroundColor: "Black" }}>
 
             <div className="container">
                 <a href="/" className="navbar-brand" style={{ color: "white" }}>Online Banking System</a>
@@ -25,7 +25,7 @@ const NavigationBar = () => {
                     <ul className="navbar-nav ms-auto">
                         <div class="btn-group mx-auto">
                             <li class="nav-item">
-                                <button className="btn btn-primary" onClick={LogoutHandler}>Logout</button>
+                                <button className="btn btn-primary w-75" onClick={LogoutHandler}>Logout</button>
                             </li>
                         </div>
                     </ul>
