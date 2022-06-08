@@ -24,7 +24,7 @@ function Signin() {
           sessionStorage.setItem("tokenId", res.data.tokenId);
           sessionStorage.setItem("customerId",values.customerId);
          
-          navigate("/customer/accounts");}
+          navigate("/customer");}
         });
     },
   });

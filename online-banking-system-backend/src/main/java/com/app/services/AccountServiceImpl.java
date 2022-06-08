@@ -95,6 +95,7 @@ public class AccountServiceImpl implements IAccountService {
 	@Override
 	public SignInResponse loginToAccount(long accountNumber, String pin) {
 
+		System.out.println(accountNumber+" | "+pin);
 		Account loginAccountObject = accountRepo.findByAccountNo(accountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
 		System.out.println(loginAccountObject);

@@ -17,9 +17,13 @@ function TransactionReport() {
     //     })
     // }
 
-    let id = 2;
+    
     let method1 = () => {
-        axios.get("http://localhost:8080/account/transactionslist/2").then((response) => {
+        axios.get("http://localhost:8080/api/accounts/transactionslist/120000000001",{
+            headers: {
+              Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
+            },
+          }).then((response) => {
             setTransactionList(response.data);
         }).catch((error) => {
             console.log(error);

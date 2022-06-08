@@ -49,7 +49,9 @@ public class AccountController {
 	
 	@PostMapping("/transferfunds")
 	public ResponseEntity<?> processTransferFunds(@RequestBody TransferFundsDto transferFundsDetails) {
+		System.out.println("in TF controller");
 		try {
+			System.out.println("in TF controller try block");
 			return ResponseEntity.status(HttpStatus.ACCEPTED)
 					.body(accountService.transferFunds(transferFundsDetails.getSenderAccountNumber(),
 							transferFundsDetails.getReceiverAccountNumber(), transferFundsDetails.getAmountToTransfer(),
@@ -63,6 +65,7 @@ public class AccountController {
 	public ResponseEntity<?> getListofTransaction(@PathVariable long accountNumber) {
 		return new ResponseEntity<>(transactionService.getTransactionListByAccountNumber(accountNumber), HttpStatus.OK);
 	}
+	
 
 	@PostMapping("/confirmPin")
 	public ResponseEntity<?> confirmPin(@RequestBody ConfirmAccountDto accountDetails){

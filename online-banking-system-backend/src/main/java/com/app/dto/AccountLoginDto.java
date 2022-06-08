@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AccountLoginDto {
 
-    private long accountNumber;
-    private String pin;
+	private long accountNumber;
+	private String pin;
 }

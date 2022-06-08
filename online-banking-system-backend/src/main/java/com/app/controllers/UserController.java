@@ -17,16 +17,18 @@ import com.app.services.IAccountService;
 @RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
-    private IAccountService accountService;
+	@Autowired
+	private IAccountService accountService;
 
-    @PostMapping("/logintoaccount")
-    public ResponseEntity<?> processAccountLogin(@RequestBody AccountLoginDto accountLogin) {
-        try {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .body(accountService.loginToAccount(accountLogin.getAccountNumber(), accountLogin.getPin()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
+	@PostMapping("/logintoaccount")
+	public ResponseEntity<?> processAccountLogin(@RequestBody AccountLoginDto accountLogin) {
+		System.out.println(accountLogin.getAccountNumber());
+		System.out.println(accountLogin.getPin());
+		try {
+			return ResponseEntity.status(HttpStatus.ACCEPTED)
+					.body(accountService.loginToAccount(accountLogin.getAccountNumber(), accountLogin.getPin()));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+	}
 }

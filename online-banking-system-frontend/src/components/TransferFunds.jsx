@@ -29,17 +29,23 @@ function TransferFunds() {
                 .required("Amount is required"),
         }),
         onSubmit: () => {
-            axios.post("http://localhost:8080/account/transferfunds", {
+            axios.post("http://localhost:8080/api/accounts/transferfunds", {
                 senderAccountNumber: userAccountDetails.values.senderAccountNumber,
                 receiverAccountNumber: userAccountDetails.values.receiverAccountNumber,
                 amountToTransfer: userAccountDetails.values.amountToTransfer,
                 dateOfTransaction: userAccountDetails.values.dateOfTransaction
 
-            }
+            },
+                {
+                    headers: {
+                        Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
+                    },
+                }
             ).then(res => console.log(res.data)).catch(err => console.log(err));
         },
     });
 
+    var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
     return (
         <>
 
@@ -57,8 +63,10 @@ function TransferFunds() {
                             <Form.Control
                                 name="senderAccountNumber"
                                 type="text"
-                                placeholder="Enter Sender Account Number"
-                                value={userAccountDetails.values.senderAccountNumber}
+                                // placeholder="Enter Sender Account Number"
+                                disabled
+                                // value={userAccountDetails.values.senderAccountNumber}
+                                value={accountNumber}
                                 onChange={userAccountDetails.handleChange}
                                 onBlur={userAccountDetails.handleBlur}
                             />
