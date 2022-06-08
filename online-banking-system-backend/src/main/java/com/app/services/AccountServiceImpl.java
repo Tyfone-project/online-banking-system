@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.saml2.Saml2RelyingPartyProperties.Decryption;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ import com.app.dao.TransactionRepositry;
 import com.app.dao.UserRepository;
 import com.app.dto.AccountDashboardDto;
 import com.app.dto.AccountDto;
-import com.app.dto.ConfirmAccountDto;
 import com.app.dto.SignInResponse;
 import com.app.dto.UserAccountDto;
 import com.app.jwt_utils.JwtUtils;
@@ -88,8 +86,13 @@ public class AccountServiceImpl implements IAccountService {
 	@Override
 	public UserDto retrieveAllAccountsByCustomerId(Principal principal) {
 		long custId = Long.parseLong(principal.getName());
-		Optional<User> user = userRepo.findById(custId);
-		return new UserDto(accountRepo.findByCustomerId(custId), user);
+		User user = userRepo.findById(custId).orElseThrow(() -> new RuntimeException("User not found"));
+		List<Account> accounts = accountRepo.findByCustomerId(custId);
+
+		return new UserDto(
+				accounts.stream().map((acc) -> new UserAccountDto(acc.getAccountNo(), acc.getAccountType().toString()))
+						.collect(Collectors.toList()),user.getFirstName()+" "+user.getLastName(),
+				user.getProfilePicture());
 	}
 
 	@Override
@@ -110,16 +113,7 @@ public class AccountServiceImpl implements IAccountService {
 	public AccountDashboardDto getAccountDashboard(long accountNumber) {
 		Account account = accountRepo.findByAccountNo(accountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
-		return new AccountDashboardDto(account.getBalance(), transactionRepo.findRecentTransactions(accountNumber),
-				transactionRepo.getMoneySpentThisMonth(accountNumber));
-	}
-
-	@Override
-	public int getAccountByAccountNo(ConfirmAccountDto accountDetails) {
-		long accountNo = Long.parseLong(accountDetails.getAccountNo());
-		String pin= accountDetails.getPin();
-		int result=accountRepo.findByAccountNoAndPin(accountNo,pin);
-		return result;
+		return new AccountDashboardDto(account.getBalance(), transactionRepo.findRecentTransactions(accountNumber), transactionRepo.getMoneySpentThisMonth(accountNumber));
 	}
 
 }

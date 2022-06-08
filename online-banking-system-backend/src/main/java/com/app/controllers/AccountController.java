@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.AccountDto;
-import com.app.dto.ConfirmAccountDto;
 import com.app.dto.TransferFundsDto;
 import com.app.services.IAccountService;
 import com.app.services.ITransactionService;
@@ -34,11 +33,12 @@ public class AccountController {
 	public ResponseEntity<?> accountList(Principal principal) {
 		return new ResponseEntity<>(accountService.retrieveAllAccountsByCustomerId(principal), HttpStatus.OK);
 	}
-
+	
 	@GetMapping("/{accountNumber}")
 	public ResponseEntity<?> accountDashboard(@PathVariable long accountNumber) {
 		return new ResponseEntity<>(accountService.getAccountDashboard(accountNumber), HttpStatus.OK);
 	}
+
 	
 	@PostMapping("/addAccount")
 	public ResponseEntity<?> addAccount(@RequestBody AccountDto request, Principal principal) {
@@ -46,7 +46,6 @@ public class AccountController {
 		return new ResponseEntity<>(accountService.saveAccount(request, principal), HttpStatus.CREATED);
 	}
 
-	
 	@PostMapping("/transferfunds")
 	public ResponseEntity<?> processTransferFunds(@RequestBody TransferFundsDto transferFundsDetails) {
 		System.out.println("in TF controller");
@@ -67,8 +66,4 @@ public class AccountController {
 	}
 	
 
-	@PostMapping("/confirmPin")
-	public ResponseEntity<?> confirmPin(@RequestBody ConfirmAccountDto accountDetails){
-		return new ResponseEntity<>(accountService.getAccountByAccountNo(accountDetails),HttpStatus.OK);
-	}
 }

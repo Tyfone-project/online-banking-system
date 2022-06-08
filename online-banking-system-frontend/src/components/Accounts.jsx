@@ -25,7 +25,6 @@ function Accounts() {
         )
         .then((response) => {
           alert("Account created successfully!!");
-          navigate('/customer/accounts')
           console.log(response.data);
         })
         .catch((err) => console.log(err));
@@ -68,11 +67,12 @@ function Accounts() {
 
         <Button variant="primary" type="submit" className="w-25" onClick={() => navigate("/customer/accounts")}>
           Back
-        </Button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </Button> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
         <Button variant="primary" type="submit" className="w-50">
           Create Account
         </Button>
       </Form>
+     
     </div>
   );
 }

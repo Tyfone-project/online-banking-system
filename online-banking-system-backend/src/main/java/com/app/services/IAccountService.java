@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 import com.app.dto.AccountDashboardDto;
 import com.app.dto.AccountDto;
-import com.app.dto.ConfirmAccountDto;
 import com.app.dto.SignInResponse;
 import com.app.dto.UserDto;
 import com.app.pojos.Account;
@@ -23,8 +22,6 @@ public interface IAccountService {
 	public SignInResponse loginToAccount(long accountNumber, String pin);
 	
 	public AccountDashboardDto getAccountDashboard(long accountNumber);
-
-	public int getAccountByAccountNo(ConfirmAccountDto accountDetails);
 
 	
 }

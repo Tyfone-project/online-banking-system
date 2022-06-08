@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.app.dto.ConfirmAccountDto;
 import com.app.pojos.Account;
 
 public interface AccountRepositry extends JpaRepository<Account, Long>{
@@ -17,9 +16,5 @@ public interface AccountRepositry extends JpaRepository<Account, Long>{
 
 	@Query( "select a from Account a where a.user.customerId=:customerId")
 	List<Account> findByCustomerId(long customerId);
-
-	@Query("select count(*) from Account a where a.accountNo=:accountNo and pin=:pin ")
-	int findByAccountNoAndPin(long accountNo, String pin);
 		
 }
-

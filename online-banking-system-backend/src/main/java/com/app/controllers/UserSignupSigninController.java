@@ -1,9 +1,14 @@
 package com.app.controllers;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +32,9 @@ import com.app.services.IUserService;
 public class UserSignupSigninController {
 
 	@Autowired
+	private JavaMailSender mailSender;
+	
+	@Autowired
 	private AuthenticationManager authManager;
 
 	@Autowired
@@ -34,6 +42,9 @@ public class UserSignupSigninController {
 
 	@Autowired
 	private IUserService userService;
+	
+	public static int noOfQuickServiceThreads = 20;	
+	private ScheduledExecutorService quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads); 
 
 	@PostMapping(value = "/signup", consumes = {"multipart/form-data"})
 	public ResponseEntity<?> signUp(@RequestPart SignUpRequest request, @RequestPart MultipartFile image) {

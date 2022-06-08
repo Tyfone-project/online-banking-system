@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import { useNavigate } from 'react-router-dom'
 
 function Signup() {
+  const navigate = useNavigate();
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png")
   const [showKycForm, setShowKycForm] = useState(false);
@@ -85,15 +87,19 @@ function Signup() {
         roles: "ROLE_CUSTOMER",
       }
       const json = JSON.stringify(obj);
-      const blob = new Blob([json],{
+      const blob = new Blob([json], {
         type: "application/json"
       })
       const formData = new FormData();
-      formData.append("request",blob);
-      formData.append("image",image);
+      formData.append("request", blob);
+      formData.append("image", image);
       axios
         .post("http://localhost:8080/api/signup", formData)
-        .then((res) => console.log(res));
+        .then((res) => {
+          alert("Registered Successfully, Please check your email for customer ID");
+          console.log(res);
+          navigate("/login");
+        })
     },
   });
 
@@ -101,7 +107,7 @@ function Signup() {
     setImage(e.target.files[0]);
     const reader = new FileReader();
     reader.onload = () => {
-      if(reader.readyState ==2 ){
+      if (reader.readyState == 2) {
         setPreview(reader.result)
       }
     }
@@ -299,16 +305,16 @@ function Signup() {
 
             <div className="d-flex gap-4 align-items-center justify-content-between">
               <img src={preview} height="150px" width="150px" className="rounded-2" />
-            <Form.Group>
-              <Form.Label>Upload Profile Picture</Form.Label>
-              <Form.Control
-                type="file"
-                name="img"
-                accept="image/*"
-                required={true}
-                onChange={handleImageUpload}
-              />
-            </Form.Group>
+              <Form.Group>
+                <Form.Label>Upload Profile Picture</Form.Label>
+                <Form.Control
+                  type="file"
+                  name="img"
+                  accept="image/*"
+                  required={true}
+                  onChange={handleImageUpload}
+                />
+              </Form.Group>
             </div>
 
             <div className="d-flex gap-5 mt-3">
