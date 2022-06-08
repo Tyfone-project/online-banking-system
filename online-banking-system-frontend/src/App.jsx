@@ -1,31 +1,36 @@
 import "./App.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import Landing from "./components/Landing";
 import Login from "./components/Login";
 import { Route, Routes } from "react-router-dom";
 import Signup from "./components/Signup";
-
-import Dashboard from "./components/Dashboard";
-import CheckPassword from "./components/CheckPassword";
-import DisplayAllAccounts from "./components/DisplayAllAccounts";
+import TransferFunds from "./components/TransferFunds";
+import TransactionReport from "./components/TransactionReport";
 import Accounts from "./components/Accounts";
+import DisplayAllAccounts from "./components/DisplayAllAccounts";
 
 function App() {
-
   return (
-    
     <Routes>
-      <Route path="/" element={<Landing/>}>
-        <Route index element={<Login/>} />
-        <Route path="login" element={<Login/>} />
-        <Route path="signup" element={<Signup/>} />
-        <Route path="/customer/addAccount" element={<Accounts/>}/>
+      <Route path="/" element={<Landing />}>
+        <Route index element={<Login />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
       </Route>
-      <Route path="/customer/accounts" element={<DisplayAllAccounts/>}/>
-      
-      <Route path="/dashboard" element={<Dashboard/>}/>
-      <Route path="/checkPassword" element={<CheckPassword/>}/>
-      
+      <Route path="/customer/accounts" element={<DisplayAllAccounts />}>
+        <Route path="addAccount" element={<Accounts />} />
+        <Route path="confirmPin" element={<ConfirmPin />} />
+      </Route>
+      <Route path="/account" element={<Dashboard />}>
+        <Route index element={<AccountHome />} />
+        <Route path="transferfunds" element={<TransferFunds />} />
+        <Route path="transactionslist" element={<TransactionReport />} />
+      </Route>
+
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/checkPassword" element={<CheckPassword />} />
+
 
     </Routes>
   );

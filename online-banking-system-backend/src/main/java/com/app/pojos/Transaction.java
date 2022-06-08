@@ -46,5 +46,7 @@ public class Transaction extends BaseEntity {
 	@ManyToOne
     @JoinColumn(name = "transaction_from")
     private Account account;
+
+	
 	
 }

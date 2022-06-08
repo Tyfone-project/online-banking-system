@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
-import DisplayAllAccounts from "./DisplayAllAccounts";
+import DisplayAccounts from "./DisplayAccounts";
 import { useNavigate } from 'react-router-dom'
 
 function Accounts() {
@@ -61,6 +61,7 @@ function Accounts() {
           <Form.Label>Pin</Form.Label>
           <Form.Control
             type="password"
+            name="pin"
             onChange={accountDetails.handleChange}
           />
         </Form.Group>
