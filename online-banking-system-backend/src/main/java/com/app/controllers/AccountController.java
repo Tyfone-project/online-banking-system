@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.AccountDto;
+import com.app.dto.ConfirmAccountDto;
 import com.app.dto.TransferFundsDto;
 import com.app.services.IAccountService;
 import com.app.services.ITransactionService;
@@ -63,4 +64,8 @@ public class AccountController {
 		return new ResponseEntity<>(transactionService.getTransactionListByAccountNumber(accountNumber), HttpStatus.OK);
 	}
 
+	@PostMapping("/confirmPin")
+	public ResponseEntity<?> confirmPin(@RequestBody ConfirmAccountDto accountDetails){
+		return new ResponseEntity<>(accountService.getAccountByAccountNo(accountDetails),HttpStatus.OK);
+	}
 }

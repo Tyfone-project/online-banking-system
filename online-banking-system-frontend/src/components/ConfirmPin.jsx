@@ -7,19 +7,24 @@ function ConfirmPin() {
 
     const [pin, setPin] = useState("");
     const [message, setMessage] = useState("");
+    const [accountNo, setAccountNo]=useState(sessionStorage.getItem("accountNo"));
 
     console.log(pin);
+    console.log(accountNo);
     const confirmPin = useFormik({
         initialValues: { pin: "" },
         validationSchema: Yup.object({
             password: Yup.string().required("Please enter the pin")
         }),
-        onSubmit: () => {
-            axios.post("http://localhost:8080/accounts/confirmPin", {
-                password: confirmPin.values.pin
+        onSubmit: (values) => {
+            axios.post("http://localhost:8080/api/accounts/confirmPin", {
+                password: confirmPin.values.pin,
+                accountNo:confirmPin.values.accountNo
             }).then((res) => {
                 console.log(res.data);
                 setMessage(res.data);
+                console.log("password",password);
+                console.log("accountNo",accountNo);
             }).catch(err => console.log(err));
         }
     });

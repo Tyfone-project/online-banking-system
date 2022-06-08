@@ -122,8 +122,8 @@ function DisplayAllAccounts() {
   }
   const GetDetails = (rowIndex) => {
     const id = dataRef.current[rowIndex];
-    console.log("id", id);
-
+    console.log("id", id.accountNo);
+    sessionStorage.setItem("accountNo",id.accountNo);
     navigate("/customer/confirmPin");
   };
 
