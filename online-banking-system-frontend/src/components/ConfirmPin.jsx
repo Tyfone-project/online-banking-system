@@ -12,6 +12,7 @@ function ConfirmPin() {
     console.log(pin);
     console.log(accountNo);
     const confirmPin = useFormik({
+        
         initialValues: { pin: "" },
         validationSchema: Yup.object({
             password: Yup.string().required("Please enter the pin")
