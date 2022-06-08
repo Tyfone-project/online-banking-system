@@ -1,6 +1,10 @@
 package com.app.dto;
 
 import java.util.List;
+import java.util.Optional;
+
+import com.app.pojos.Account;
+import com.app.pojos.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserDto {
 
-	private List<UserAccountDto> accounts;
-	
-	private String name;
+	private List<Account> accounts;
 
-	private byte[] profilePicture;
+	private Optional<User> user;
 }

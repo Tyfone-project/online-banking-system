@@ -86,13 +86,8 @@ public class AccountServiceImpl implements IAccountService {
 	@Override
 	public UserDto retrieveAllAccountsByCustomerId(Principal principal) {
 		long custId = Long.parseLong(principal.getName());
-		User user = userRepo.findById(custId).orElseThrow(() -> new RuntimeException("User not found"));
-		List<Account> accounts = accountRepo.findByCustomerId(custId);
-
-		return new UserDto(
-				accounts.stream().map((acc) -> new UserAccountDto(acc.getAccountNo(), acc.getAccountType().toString()))
-						.collect(Collectors.toList()),user.getFirstName()+" "+user.getLastName(),
-				user.getProfilePicture());
+		Optional<User> user = userRepo.findById(custId);
+		return new UserDto(accountRepo.findByCustomerId(custId), user);
 	}
 
 	@Override
@@ -112,7 +107,8 @@ public class AccountServiceImpl implements IAccountService {
 	public AccountDashboardDto getAccountDashboard(long accountNumber) {
 		Account account = accountRepo.findByAccountNo(accountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
-		return new AccountDashboardDto(account.getBalance(), transactionRepo.findRecentTransactions(accountNumber), transactionRepo.getMoneySpentThisMonth(accountNumber));
+		return new AccountDashboardDto(account.getBalance(), transactionRepo.findRecentTransactions(accountNumber),
+				transactionRepo.getMoneySpentThisMonth(accountNumber));
 	}
 
 }
