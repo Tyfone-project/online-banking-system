@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { Card, Table } from "react-bootstrap";
 
@@ -18,7 +19,7 @@ function AccountHome() {
   var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/accounts/"+accountNumber, {
+      .get(`http://localhost:8080/api/accounts/${jwtDecode(sessionStorage.getItem("accountNo")).sub}`, {
         headers: {
           Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
         },

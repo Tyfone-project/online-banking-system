@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +19,8 @@ import com.app.dto.AccountDashboardDto;
 import com.app.dto.AccountDto;
 import com.app.dto.SignInResponse;
 import com.app.dto.UserAccountDto;
-import com.app.jwt_utils.JwtUtils;
 import com.app.dto.UserDto;
+import com.app.jwt_utils.JwtUtils;
 import com.app.pojos.Account;
 import com.app.pojos.AccountType;
 import com.app.pojos.Transaction;
@@ -96,7 +96,7 @@ public class AccountServiceImpl implements IAccountService {
 	}
 
 	@Override
-	public SignInResponse loginToAccount(long accountNumber, String pin) {
+	public SignInResponse loginToAccount(long accountNumber, String pin, Authentication auth) {
 
 		System.out.println(accountNumber+" | "+pin);
 		Account loginAccountObject = accountRepo.findByAccountNo(accountNumber)
@@ -104,7 +104,7 @@ public class AccountServiceImpl implements IAccountService {
 		System.out.println(loginAccountObject);
 		boolean isPresent = BCrypt.checkpw(pin, loginAccountObject.getPin());
 		if (isPresent) {
-			return new SignInResponse(jwtUtils.generateJwtTokenWithAccNo(accountNumber));
+			return new SignInResponse(jwtUtils.generateJwtTokenWithAccNo(accountNumber, auth));
 		}
 		throw new RuntimeException("Invalid Pin!!!");
 	}

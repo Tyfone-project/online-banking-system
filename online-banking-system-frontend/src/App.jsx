@@ -7,7 +7,6 @@ import { Route, Routes } from "react-router-dom";
 import Signup from "./components/Signup";
 import TransferFunds from "./components/TransferFunds";
 import TransactionReport from "./components/TransactionReport";
-import Accounts from "./components/Accounts";
 import Dashboard from "./components/Dashboard";
 import ConfirmPin from "./components/ConfirmPin";
 import DisplayAllAccounts from "./components/DisplayAllAccounts";

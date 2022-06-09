@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import jwtDecode from "jwt-decode";
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -45,7 +46,8 @@ function TransferFunds() {
         },
     });
 
-    var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
+    var accountNumber = jwtDecode(sessionStorage.getItem("accountNo")).sub;
+    console.log(accountNumber);
     return (
         <>
 
