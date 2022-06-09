@@ -9,8 +9,9 @@ import TransferFunds from "./components/TransferFunds";
 import TransactionReport from "./components/TransactionReport";
 import Dashboard from "./components/Dashboard";
 import ConfirmPin from "./components/ConfirmPin";
-import DisplayAccounts from "./components/DisplayAccounts";
+import DisplayAllAccounts from "./components/DisplayAllAccounts";
 import AccountHome from "./components/AccountHome";
+import Treport from "./components/Treport";
 
 function App() {
   return (
@@ -27,7 +28,9 @@ function App() {
       <Route index element={<AccountHome />} />
         <Route path="transferfunds" element={<TransferFunds />} />
         <Route path="transactionslist" element={<TransactionReport />} />
+        {/* <Route path="transactionslist" element={<Treport/>} /> */}
       </Route>
+      {/* <Route path="/treport" element={<Treport/>}></Route> */}
     </Routes>
   );
 }

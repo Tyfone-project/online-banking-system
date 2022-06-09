@@ -65,5 +65,4 @@ public class AccountController {
 		return new ResponseEntity<>(transactionService.getTransactionListByAccountNumber(accountNumber), HttpStatus.OK);
 	}
 	
-
 }

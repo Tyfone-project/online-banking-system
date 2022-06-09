@@ -72,11 +72,11 @@ function TransferFunds() {
                                 onChange={userAccountDetails.handleChange}
                                 onBlur={userAccountDetails.handleBlur}
                             />
-                            {userAccountDetails.touched.senderAccountNumber && userAccountDetails.errors.senderAccountNumber && (
+                            {/* {userAccountDetails.touched.senderAccountNumber && userAccountDetails.errors.senderAccountNumber && (
                                 <span className="text-danger">
                                     <small>{userAccountDetails.errors.senderAccountNumber}</small>
                                 </span>
-                            )}
+                            )} */}
                         </Form.Group>
 
                         <Form.Group className="mb-3" style={{ paddingLeft: "10%", paddingRight: "10%" }}>

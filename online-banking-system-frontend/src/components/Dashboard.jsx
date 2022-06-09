@@ -34,8 +34,7 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    // const custId = jwtDecode(sessionStorage.getItem("tokenId")).sub
-    axios.get("http://localhost:8080/api/accounts/2").then((res) => {});
+    axios.get("http://localhost:8080/api/accounts/"+jwtDecode(sessionStorage.getItem("accountNo")).sub).then((res) => {});
   }, []);
   return (
     <>
