@@ -57,7 +57,7 @@ function TransactionReport() {
                             {transactionList.map((value, key) => {
                                 return (
                                     <tr>
-                                        <td>{value.id}</td>
+                                        <td>{value.transactionId}</td>
                                         <td>{value.amount}</td>
                                         <td>{value.date}</td>
                                         <td>{value.transactionTo}</td>

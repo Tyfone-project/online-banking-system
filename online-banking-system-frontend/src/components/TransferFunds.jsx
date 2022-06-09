@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import jwtDecode from "jwt-decode";
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -16,9 +17,9 @@ function TransferFunds() {
             amountToTransfer: "",
         },
         validationSchema: Yup.object({
-            senderAccountNumber: Yup.string()
-                .max(16, "Cannot exceed 16 digits")
-                .required("Sender account number is required"),
+            // senderAccountNumber: Yup.string()
+            //     .max(16, "Cannot exceed 16 digits")
+            //     .required("Sender account number is required"),
             receiverAccountNumber: Yup.string()
                 .max(16, "Cannot exceed 16 digits")
                 .required("Receiver account number is required"),
@@ -30,7 +31,7 @@ function TransferFunds() {
         }),
         onSubmit: () => {
             axios.post("http://localhost:8080/api/accounts/transferfunds", {
-                senderAccountNumber: userAccountDetails.values.senderAccountNumber,
+                senderAccountNumber: accountNumber,
                 receiverAccountNumber: userAccountDetails.values.receiverAccountNumber,
                 amountToTransfer: userAccountDetails.values.amountToTransfer,
                 dateOfTransaction: userAccountDetails.values.dateOfTransaction
@@ -45,7 +46,8 @@ function TransferFunds() {
         },
     });
 
-    var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
+    var accountNumber = jwtDecode(sessionStorage.getItem("accountNo")).sub;
+    console.log(accountNumber);
     return (
         <>
 

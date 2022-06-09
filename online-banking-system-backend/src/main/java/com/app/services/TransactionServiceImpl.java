@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.TransactionRepositry;
-import com.app.pojos.Transaction;
+import com.app.dto.ITransactionDto;
 
 @Service
 @Transactional
@@ -17,7 +17,7 @@ public class TransactionServiceImpl implements ITransactionService {
 	private TransactionRepositry transactionRepo;
 	
 	@Override
-	public List<Transaction> getTransactionListByAccountNumber(long accountNo) {
+	public List<ITransactionDto> getTransactionListByAccountNumber(long accountNo) {
 		return transactionRepo.findByAccountNo(accountNo);
 	}
 

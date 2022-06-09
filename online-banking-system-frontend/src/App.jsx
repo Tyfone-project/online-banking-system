@@ -7,7 +7,6 @@ import { Route, Routes } from "react-router-dom";
 import Signup from "./components/Signup";
 import TransferFunds from "./components/TransferFunds";
 import TransactionReport from "./components/TransactionReport";
-import Accounts from "./components/Accounts";
 import Dashboard from "./components/Dashboard";
 import ConfirmPin from "./components/ConfirmPin";
 import DisplayAccounts from "./components/DisplayAccounts";
@@ -22,7 +21,6 @@ function App() {
         <Route path="signup" element={<Signup />} />
       </Route>
       <Route path="/customer" element={<DisplayAccounts />}>
-        <Route path="addAccount" element={<Accounts />} />
         <Route path="confirmPin" element={<ConfirmPin />} />
       </Route>
       <Route path="/account" element={<Dashboard/>}>
