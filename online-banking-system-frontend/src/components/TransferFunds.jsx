@@ -16,9 +16,9 @@ function TransferFunds() {
             amountToTransfer: "",
         },
         validationSchema: Yup.object({
-            senderAccountNumber: Yup.string()
-                .max(16, "Cannot exceed 16 digits")
-                .required("Sender account number is required"),
+            // senderAccountNumber: Yup.string()
+            //     .max(16, "Cannot exceed 16 digits")
+            //     .required("Sender account number is required"),
             receiverAccountNumber: Yup.string()
                 .max(16, "Cannot exceed 16 digits")
                 .required("Receiver account number is required"),
@@ -30,7 +30,7 @@ function TransferFunds() {
         }),
         onSubmit: () => {
             axios.post("http://localhost:8080/api/accounts/transferfunds", {
-                senderAccountNumber: userAccountDetails.values.senderAccountNumber,
+                senderAccountNumber: accountNumber,
                 receiverAccountNumber: userAccountDetails.values.receiverAccountNumber,
                 amountToTransfer: userAccountDetails.values.amountToTransfer,
                 dateOfTransaction: userAccountDetails.values.dateOfTransaction
@@ -70,11 +70,11 @@ function TransferFunds() {
                                 onChange={userAccountDetails.handleChange}
                                 onBlur={userAccountDetails.handleBlur}
                             />
-                            {userAccountDetails.touched.senderAccountNumber && userAccountDetails.errors.senderAccountNumber && (
+                            {/* {userAccountDetails.touched.senderAccountNumber && userAccountDetails.errors.senderAccountNumber && (
                                 <span className="text-danger">
                                     <small>{userAccountDetails.errors.senderAccountNumber}</small>
                                 </span>
-                            )}
+                            )} */}
                         </Form.Group>
 
                         <Form.Group className="mb-3" style={{ paddingLeft: "10%", paddingRight: "10%" }}>

@@ -2,10 +2,10 @@ package com.app.services;
 
 import java.util.List;
 
-import com.app.pojos.Transaction;
+import com.app.dto.ITransactionDto;
 
 public interface ITransactionService {
 
-	List<Transaction> getTransactionListByAccountNumber(long accountNo);
+	List<ITransactionDto> getTransactionListByAccountNumber(long accountNo);
 	
 }

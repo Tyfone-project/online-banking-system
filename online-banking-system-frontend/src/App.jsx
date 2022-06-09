@@ -10,8 +10,9 @@ import TransactionReport from "./components/TransactionReport";
 import Accounts from "./components/Accounts";
 import Dashboard from "./components/Dashboard";
 import ConfirmPin from "./components/ConfirmPin";
-import DisplayAccounts from "./components/DisplayAccounts";
+import DisplayAllAccounts from "./components/DisplayAllAccounts";
 import AccountHome from "./components/AccountHome";
+import Treport from "./components/Treport";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
       </Route>
-      <Route path="/customer" element={<DisplayAccounts />}>
+      <Route path="/customer" element={<DisplayAllAccounts />}>
         <Route path="addAccount" element={<Accounts />} />
         <Route path="confirmPin" element={<ConfirmPin />} />
       </Route>
@@ -29,7 +30,9 @@ function App() {
       <Route index element={<AccountHome />} />
         <Route path="transferfunds" element={<TransferFunds />} />
         <Route path="transactionslist" element={<TransactionReport />} />
+        {/* <Route path="transactionslist" element={<Treport/>} /> */}
       </Route>
+      {/* <Route path="/treport" element={<Treport/>}></Route> */}
     </Routes>
   );
 }

@@ -17,9 +17,9 @@ function TransactionReport() {
     //     })
     // }
 
-    
+    var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
     let method1 = () => {
-        axios.get("http://localhost:8080/api/accounts/transactionslist/120000000001",{
+        axios.get("http://localhost:8080/api/accounts/transactionslist/"+accountNumber,{
             headers: {
               Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
             },
@@ -57,7 +57,7 @@ function TransactionReport() {
                             {transactionList.map((value, key) => {
                                 return (
                                     <tr>
-                                        <td>{value.id}</td>
+                                        <td>{value.transactionId}</td>
                                         <td>{value.amount}</td>
                                         <td>{value.date}</td>
                                         <td>{value.transactionTo}</td>

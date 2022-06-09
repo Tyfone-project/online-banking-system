@@ -15,9 +15,10 @@ function AccountHome() {
     moneySpentThisMonth: 0,
   });
 
+  var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/accounts/2", {
+      .get("http://localhost:8080/api/accounts/"+accountNumber, {
         headers: {
           Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
         },
@@ -80,7 +81,7 @@ function AccountHome() {
                 <td>{tx.transactionTo}</td>
                 <td>{tx.amount}</td>
                 <td>{tx.date}</td>
-                <td>{tx.transactionStatus}</td>
+                <td style={{ color: "green", fontWeight: "bold" }}>{tx.transactionStatus}</td>
               </tr>
             ))}
         </tbody>

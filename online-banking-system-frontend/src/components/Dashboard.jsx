@@ -32,13 +32,15 @@ function Dashboard() {
     whiteSpace: "noWrap",
   };
 
+  var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
+
   useEffect(() => {
-    axios.get("http://localhost:8080/api/accounts/2").then((res) => {});
+    axios.get("http://localhost:8080/api/accounts/"+accountNumber).then((res) => {});
   }, []);
   return (
     <>
       <div className="d-flex">
-        <ProSidebar style={{ height: "100vh" }}>
+        <ProSidebar style={{ height: "100vh" , position:"fixed"}}>
           <SidebarHeader style={headerStyle}>Sidebar Example</SidebarHeader>
           <SidebarContent>
             <Menu iconShape="circle">
@@ -70,7 +72,7 @@ function Dashboard() {
             </div>
           </SidebarFooter>
         </ProSidebar>
-        <div className="w-100">
+        <div className="w-100" style={{marginLeft:"260px"}}>
           <Navbar bg="dark" variant="dark" className="sticky-top">
             <Container>
               <Navbar.Brand href="#home">Account Number</Navbar.Brand>

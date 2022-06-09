@@ -235,7 +235,7 @@ function Signup() {
               )}
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100">
+            <Button variant="primary" type="submit" className="w-100 m-0">
               Continue
             </Button>
           </Form>
@@ -320,7 +320,7 @@ function Signup() {
               >
                 Back
               </Button>
-              <Button variant="primary" type="submit" className="w-100">
+              <Button variant="primary" type="submit" className="w-100 m-0">
                 Sign Up
               </Button>
             </div>
