@@ -15,8 +15,8 @@ public interface TransactionRepositry extends JpaRepository<Transaction, Integer
 	@Query("Select t.id as transactionId, t.account.accountNo AS transactionFrom, t.transactionTo as transactionTo, t.amount as amount , t.date as date , t.transactionStatus as transactionStatus from Transaction t where t.account.accountNo like :accountNumber or t.transactionTo =:accountNumber")
 	List<ITransactionDto> findByAccountNo(@Param("accountNumber") long accountNo);
 
-	@Query(value="select transaction_id AS transactionId, transaction_from as transactionFrom, transaction_to as transactionTo, amount, date, transaction_Status as transactionStatus FROM transactions where t.account.accountNo=:accountNumber or t.transactionTo=:accountNumber ORDER BY date DESC LIMIT 5", nativeQuery = true)
-	List<ITransactionDto> findRecentTransactions(@Param("accountNo") long accountNumber);
+	@Query(value="select transaction_id AS transactionId, transaction_from as transactionFrom, transaction_to as transactionTo, amount, date, transaction_Status as transactionStatus FROM transactions where transaction_from=:accountNumber or transaction_to=:accountNumber ORDER BY date DESC LIMIT 5", nativeQuery = true)
+	List<ITransactionDto> findRecentTransactions(@Param("accountNumber") long accountNumber);
 	
 	@Query(value="select SUM(amount) from transactions where transaction_from=:accountNumber and SUBSTRING(date,1,7)=SUBSTRING(curdate(),1,7)", nativeQuery = true)
 	BigDecimal getMoneySpentThisMonth(@Param("accountNumber") long accountNumber);

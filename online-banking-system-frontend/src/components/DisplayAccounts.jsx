@@ -4,13 +4,17 @@ import React, { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-function DisplayAllAccounts() {
+function DisplayAccounts() {
   const [accounts, setAccounts] = useState([]);
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
 
   const [show, setShow] = useState(false);
+  const [show2, setShow2] = useState(false);
+  const [accountType, setAccountType] = useState("");
+  const [pin, setPin] = useState("");
   const handleClose = () => setShow(false);
+  const handleClose2 = () => setShow2(false);
   const [userAccountNumber, setUserAccountNumber] = useState("");
   const handleShow = (accountNumber) => {
     setUserAccountNumber(accountNumber);
@@ -43,33 +47,29 @@ function DisplayAllAccounts() {
 
 
   const onAccountLogin = (accountNumber, pin) => {
-
-    event.preventDefault();
     let accountLoginObject = {
       accountNumber,
-      pin
-    }
-    window.sessionStorage.setItem("accountNumberInSession", accountNumber);
-    console.log(accountLoginObject);
+      pin,
+    };
 
     if (validation()) {
       setAccountPinErr("");
-      // let accno = window.sessionStorage.getItem("accountNumberInSession");
-      // console.log(accno);
-      axios.post("http://localhost:8080/api/user/logintoaccount", (accountLoginObject),
-        {
-          headers: {
-            Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
-          },
-        }).then(response => {
-          console.log(response);
+      axios
+        .post(
+          "http://localhost:8080/api/user/logintoaccount",
+          accountLoginObject,
+          {
+            headers: {
+              Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
+            },
+          }
+        )
+        .then((response) => {
+          sessionStorage.setItem("accountNo", response.data.tokenId)
           navigate("/account");
-        }).catch(error => {
-          console.log(error);
-          setAccountPinErr(error.response.data);
-        });
-
-    }
+        })
+        .catch((error) => console.log(error));
+    };
   }
 
   useEffect(() => {
@@ -86,6 +86,22 @@ function DisplayAllAccounts() {
         setName(res.data.name);
       });
   }, []);
+
+
+  const handleCreateAccount = (e) => {
+    console.log(accountType,pin);
+    e.preventDefault();
+    axios.post(
+      "http://localhost:8080/api/accounts/addAccount",
+      { accountType, pin },
+      {
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
+        },
+      }
+    );
+    handleClose2();
+  };
 
   return (
     <>
@@ -122,8 +138,8 @@ function DisplayAllAccounts() {
           {accounts.length > 0 &&
             accounts.map((acc) => (
               <tr>
-                <td>{acc.accountNo}</td>
-                <td>{acc.accountType}</td>
+                <td className="align-middle fs-4">{acc.accountNo}</td>
+                <td className="align-middle fs-4">{acc.accountType}</td>
                 <td className="text-end">
                   <Button onClick={() => handleShow(acc.accountNo)}>Click here to continue</Button>
                 </td>
@@ -140,31 +156,8 @@ function DisplayAllAccounts() {
               <Modal.Title className="text-center">Account Login</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {/* <div className=" d-flex justify-content-center">
-                <input
-                  type="text"
-                  name="userAccountNumber"
-                  disabled
-                  value={userAccountNumber}
-                />
-              </div>
-              <br />
-              <div className=" d-flex justify-content-center">
-                <input
-                  type="password"
-                  name="accountPin"
-                  placeholder="Enter 4 digit PIN"
-                  onChange={handleAccountPin}
-                  value={accountPin}
-                  maxLength="4"
-                />
-
-              </div> */}
-
-
               <Form className=" d-flex justify-content-center">
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  {/* <Form.Label>Account Number</Form.Label> */}
                   <Form.Control
                     type="text"
                     name="userAccountNumber"
@@ -176,7 +169,6 @@ function DisplayAllAccounts() {
                 &nbsp;
                 &nbsp;
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                  {/* <Form.Label>PIN</Form.Label> */}
                   <Form.Control
                     type="password"
                     name="accountPin"
@@ -186,15 +178,12 @@ function DisplayAllAccounts() {
                     maxLength="4"
                   />
                 </Form.Group>
-                {/* <Button variant="primary" type="submit" className="w-100 m-0">
-                  Sign in
-                </Button> */}
-                
+
               </Form>
 
               <div className=" d-flex justify-content-center">
-                  <span className="text-danger">{accountPinErr}</span>
-                </div>
+                <span className="text-danger">{accountPinErr}</span>
+              </div>
 
               <div className=" d-flex justify-content-center">
                 {/* <div>{accountPin}</div> */}
@@ -234,10 +223,60 @@ function DisplayAllAccounts() {
               </Button>
             </Modal.Footer>
           </Modal>
+
         </div>
+      </div>
+
+      <Modal show={show2} onHide={() => setShow2(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Account</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleCreateAccount}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Account Type</Form.Label>
+              <Form.Select
+                required
+                value={accountType}
+                onChange={(e) => setAccountType(e.target.value)}
+              >
+                <option disabled value="">
+                  Select a account type
+                </option>
+                <option value="SAVINGS">SAVINGS</option>
+                <option value="CURRENT">CURRENT</option>
+                <option value="SALARY">SALARY</option>
+                <option value="LOAN">LOAN</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Pin</Form.Label>
+              <Form.Control
+                type="password"
+                name="pin"
+                required
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+              />
+            </Form.Group>
+            <div className="d-flex">
+              <Button variant="danger" onClick={() => setShow2(false)}>
+                Cancel
+              </Button>
+              <Button variant="primary" type="submit" className="">
+                Create Account
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <div className="d-flex justify-content-center">
+        <Button onClick={() => setShow2(true)}>Add Account</Button>
       </div>
     </>
   );
 }
 
-export default DisplayAllAccounts;
+export default DisplayAccounts;

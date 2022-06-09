@@ -33,11 +33,10 @@ function Dashboard() {
     whiteSpace: "noWrap",
   };
 
-  var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
-
   useEffect(() => {
-    axios.get("http://localhost:8080/api/accounts/"+accountNumber).then((res) => {});
+    axios.get("http://localhost:8080/api/accounts/"+jwtDecode(sessionStorage.getItem("accountNo")).sub).then((res) => {});
   }, []);
+
   return (
     <>
       <div className="d-flex">
