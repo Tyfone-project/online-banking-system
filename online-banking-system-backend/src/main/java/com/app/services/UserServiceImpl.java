@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
@@ -32,15 +33,15 @@ public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private JavaMailSender mailSender;
-	
-	public static int noOfQuickServiceThreads = 20;	
-	private ScheduledExecutorService quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads); 
+
+		public static int noOfQuickServiceThreads = 20;	
+		private ScheduledExecutorService quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads); 
 	
 	@Override
 	public SignUpResponse registerUser(SignUpRequest request, MultipartFile image) {
 		User user = new User();
 		user.setFirstName(request.getFirstName());
-		user.setLastName(request.getLastName());
+		user.setLastName(request.getLastName());	
 		user.setPassword(encoder.encode(request.getPassword()));// set encoded pwd
 		user.setPhone(request.getPhone());
 		user.setDob(LocalDate.parse(request.getDob()));

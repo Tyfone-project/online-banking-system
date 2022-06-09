@@ -25,8 +25,6 @@ function App() {
         <Route path="addAccount" element={<Accounts />} />  
         <Route path="confirmPin" element={<ConfirmPin />} />
 
-      
-
       <Route path="/account" element={<Dashboard />}>
         <Route index element={<AccountHome />} />
         <Route path="transferfunds" element={<TransferFunds />} />

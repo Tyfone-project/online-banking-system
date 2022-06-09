@@ -18,22 +18,33 @@ function TransactionReport() {
     // }
 
     
-    let method1 = () => {
-        axios.get("http://localhost:8080/api/accounts/transactionslist/120000000001",{
+    // let method1 = () => {
+    //     axios.get("http://localhost:8080/api/accounts/transactionslist/120000000001",{
+    //         headers: {
+    //           Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
+    //         },
+    //       }).then((response) => {
+    //         setTransactionList(response.data);
+    //     }).catch((error) => {
+    //         console.log(error);
+    //     })
+    // }
+
+    // useEffect(() => {
+    //     method1();
+    // }, []);
+
+    let generateReport=()=>{
+        axios.get("http://localhost:8080/api/accounts/report/120000000001",{
             headers: {
-              Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
-            },
-          }).then((response) => {
+                Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
+              },
+        }).then((response) => {
             setTransactionList(response.data);
         }).catch((error) => {
             console.log(error);
         })
     }
-
-    useEffect(() => {
-        method1();
-    }, []);
-
     return (
         <>
 
@@ -67,6 +78,9 @@ function TransactionReport() {
                             })}
                         </tbody>
                     </Table>
+                    <div>
+                        <input type="button" value="Download Report" onClick={()=>generateReport()}/>
+                    </div>
                 </div>
             </div>
         </>

@@ -1,5 +1,6 @@
 package com.app.controllers;
 
+import java.io.FileNotFoundException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,12 @@ public class AccountController {
 	@GetMapping("/transactionslist/{accountNumber}")
 	public ResponseEntity<?> getListofTransaction(@PathVariable long accountNumber) {
 		return new ResponseEntity<>(transactionService.getTransactionListByAccountNumber(accountNumber), HttpStatus.OK);
+	}
+	
+	@GetMapping("/report/{accountNumber}")
+	public String generateReport(@PathVariable long accountNumber) throws FileNotFoundException{
+		transactionService.generateTransactionReport(accountNumber);
+		return "Report generated";
 	}
 	
 
