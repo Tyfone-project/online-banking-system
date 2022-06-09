@@ -14,6 +14,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.app.dto.ITransactionDto;
 
 @Service
 @Transactional
@@ -23,7 +24,7 @@ public class TransactionServiceImpl implements ITransactionService {
 	private TransactionRepositry transactionRepo;
 
 	@Override
-	public List<Transaction> getTransactionListByAccountNumber(long accountNo) {
+	public List<ITransactionDto> getTransactionListByAccountNumber(long accountNo) {
 		return transactionRepo.findByAccountNo(accountNo);
 	}
 

@@ -17,6 +17,8 @@ import javax.validation.constraints.PastOrPresent;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,6 +47,7 @@ public class Transaction extends BaseEntity {
 	
 	@ManyToOne
     @JoinColumn(name = "transaction_from")
+	@JsonIgnore
     private Account account;
 
 	

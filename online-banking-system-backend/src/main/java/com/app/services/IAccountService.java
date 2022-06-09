@@ -19,7 +19,7 @@ public interface IAccountService {
 	Account transferFunds(long senderAccountNumber, long receiverAccountNumber, BigDecimal amountToTransfer,
 			LocalDate transferDate);
 	
-	public SignInResponse loginToAccount(long accountNumber, String pin);
+	public SignInResponse loginToAccount(long accountNumber, String pin, Authentication auth);
 	
 	public AccountDashboardDto getAccountDashboard(long accountNumber);
 

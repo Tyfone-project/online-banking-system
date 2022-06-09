@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useFormik } from "formik";
+import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { Form, Button, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -18,6 +19,7 @@ function TransactionReport() {
     // }
 
     
+<<<<<<< HEAD
     // let method1 = () => {
     //     axios.get("http://localhost:8080/api/accounts/transactionslist/120000000001",{
     //         headers: {
@@ -36,6 +38,11 @@ function TransactionReport() {
 
     let generateReport=()=>{
         axios.get("http://localhost:8080/api/accounts/report/120000000001",{
+=======
+    let method1 = () => {
+        const accountNumber = jwtDecode(sessionStorage.getItem("accountNo")).sub;
+        axios.get("http://localhost:8080/api/accounts/transactionslist/"+accountNumber,{
+>>>>>>> shivam
             headers: {
                 Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
               },
@@ -61,6 +68,7 @@ function TransactionReport() {
                                 <th scope="col">Amount</th>
                                 <th scope="col">Transaction Date</th>
                                 <th scope="col">Receiver Account Number</th>
+                                <th scope="col">Sender Account Number</th>
                                 <th scope="col">Transaction Status</th>
                             </tr>
                         </thead>
@@ -68,10 +76,11 @@ function TransactionReport() {
                             {transactionList.map((value, key) => {
                                 return (
                                     <tr>
-                                        <td>{value.id}</td>
+                                        <td>{value.transactionId}</td>
                                         <td>{value.amount}</td>
                                         <td>{value.date}</td>
                                         <td>{value.transactionTo}</td>
+                                        <td>{value.transactionFrom}</td>
                                         <td style={{ color: "green", fontWeight: "bold" }}>{value.transactionStatus}</td>
                                     </tr>
                                 );

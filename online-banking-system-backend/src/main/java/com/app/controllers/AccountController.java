@@ -66,6 +66,7 @@ public class AccountController {
 		return new ResponseEntity<>(transactionService.getTransactionListByAccountNumber(accountNumber), HttpStatus.OK);
 	}
 	
+<<<<<<< HEAD
 	@GetMapping("/report/{accountNumber}")
 	public String generateReport(@PathVariable long accountNumber) throws FileNotFoundException{
 		transactionService.generateTransactionReport(accountNumber);
@@ -73,4 +74,6 @@ public class AccountController {
 	}
 	
 
+=======
+>>>>>>> shivam
 }
