@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AccountDashboardDto {
+	
 	private BigDecimal balance;
 	private List<ITransactionDto> recentTransactions;
 	private BigDecimal moneySpentThisMonth;

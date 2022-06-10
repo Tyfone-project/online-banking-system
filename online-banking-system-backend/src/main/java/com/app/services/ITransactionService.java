@@ -1,6 +1,7 @@
 package com.app.services;
 
 import java.io.FileNotFoundException;
+import java.io.OutputStream;
 import java.util.List;
 
 import com.app.dto.ChartDataDTO;
@@ -13,6 +14,6 @@ public interface ITransactionService {
 	
 	ChartDataDTO getMoneySpentByMonth(ChartRequestDto chartRequest);
 	
-//	byte[] generateTransactionReport(long accountNo) throws FileNotFoundException;
+	OutputStream generateTransactionReport(long accountNo) throws FileNotFoundException;
 	
 }

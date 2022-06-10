@@ -73,10 +73,10 @@ public class AccountController {
 		return new ResponseEntity<>(transactionService.getMoneySpentByMonth(chartRequest),HttpStatus.OK);
 	}
 	
-//	@GetMapping("/report/{accountNumber}")
-//	public String generateReport(@PathVariable long accountNumber) throws FileNotFoundException{
-//		transactionService.generateTransactionReport(accountNumber);
-//		return "Report generated";
-//	}
+	@GetMapping("/report/{accountNumber}")
+	public String generateReport(@PathVariable long accountNumber) throws FileNotFoundException{
+		transactionService.generateTransactionReport(accountNumber);
+		return "Report generated";
+	}
 	
 }
