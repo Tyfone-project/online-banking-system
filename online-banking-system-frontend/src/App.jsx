@@ -9,6 +9,8 @@ import TransferFunds from "./components/TransferFunds";
 // import TransactionReport from "./components/TransactionReport";
 import Dashboard from "./components/Dashboard";
 import ConfirmPin from "./components/ConfirmPin";
+import DisplayAllAccounts from "./components/DisplayAllAccounts";
+import DisplayAccounts from "./components/DisplayAccounts";
 import AccountHome from "./components/AccountHome";
 import Treport from "./components/Treport";
 import DisplayAccounts from "./components/DisplayAccounts";

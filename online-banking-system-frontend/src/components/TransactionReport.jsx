@@ -7,17 +7,7 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 function TransactionReport() {
-
-    const [transactionList, setTransactionList] = useState([]);
-
-    // let method1 = () => {
-    //     AdminService.getAllUserList().then((response) => {
-    //         setUserList(response.data);
-    //     }).catch((error) => {
-    //         console.log("found error", error);
-    //     })
-    // }
-
+  const [transactionList, setTransactionList] = useState([]);
     
     let method1 = () => {
         const accountNumber = jwtDecode(sessionStorage.getItem("accountNo")).sub;

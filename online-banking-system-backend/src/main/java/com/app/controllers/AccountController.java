@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.AccountDto;
+import com.app.dto.ChartRequestDto;
 import com.app.dto.TransferFundsDto;
 import com.app.services.IAccountService;
 import com.app.services.ITransactionService;
@@ -63,6 +64,12 @@ public class AccountController {
 	@GetMapping("/transactionslist/{accountNumber}")
 	public ResponseEntity<?> getListofTransaction(@PathVariable long accountNumber) {
 		return new ResponseEntity<>(transactionService.getTransactionListByAccountNumber(accountNumber), HttpStatus.OK);
+	}
+	
+	@PostMapping("/transactionsbymonth")
+	public ResponseEntity<?> getMoneySpentByMonth(@RequestBody ChartRequestDto chartRequest){
+		
+		return new ResponseEntity<>(transactionService.getMoneySpentByMonth(chartRequest),HttpStatus.OK);
 	}
 	
 }
