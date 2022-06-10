@@ -39,7 +39,7 @@ function TransferFunds() {
                 .max(40000, "Cannot be more than Forty-thousand")
                 .required("Amount is required"),
         }),
-        onSubmit: () => {
+        onSubmit: (values,{resetForm}) => {
             axios.post("http://localhost:8080/api/accounts/transferfunds", {
                 senderAccountNumber: accountNumber,
                 receiverAccountNumber: userAccountDetails.values.receiverAccountNumber,
@@ -55,6 +55,7 @@ function TransferFunds() {
             ).then(res => {
                 console.log(res.data);
                 { notify() }
+                resetForm();
             }).catch(err => {
                 console.log(err);
             });
