@@ -22,8 +22,6 @@ function Signin() {
         .then((res) => {
           if (res.status === 200){ 
           sessionStorage.setItem("tokenId", res.data.tokenId);
-          sessionStorage.setItem("customerId",values.customerId);
-         
           navigate("/customer");}
         });
     },

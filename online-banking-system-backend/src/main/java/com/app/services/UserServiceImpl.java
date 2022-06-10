@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
@@ -34,14 +33,14 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private JavaMailSender mailSender;
 
-		public static int noOfQuickServiceThreads = 20;	
-		private ScheduledExecutorService quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads); 
-	
+	public static int noOfQuickServiceThreads = 20;
+	private ScheduledExecutorService quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads);
+
 	@Override
 	public SignUpResponse registerUser(SignUpRequest request, MultipartFile image) {
 		User user = new User();
 		user.setFirstName(request.getFirstName());
-		user.setLastName(request.getLastName());	
+		user.setLastName(request.getLastName());
 		user.setPassword(encoder.encode(request.getPassword()));// set encoded pwd
 		user.setPhone(request.getPhone());
 		user.setDob(LocalDate.parse(request.getDob()));
@@ -62,19 +61,19 @@ public class UserServiceImpl implements IUserService {
 		mail.setSubject("Online Banking system registration completed successfully!!");
 		mail.setText("Hello " + persistentUser.getFirstName() + ",\n"
 				+ "You have successfully completed registration with online banking system, your Customer ID is  "
-				+ persistentUser.getCustomerId()+"\n"+"Use this customer ID to login");
+				+ persistentUser.getCustomerId() + "\n" + "Use this customer ID to login");
 
 		quickService.submit(new Runnable() {
 			@Override
 			public void run() {
-				try{
+				try {
 					mailSender.send(mail);
-				}catch(Exception e){
-					System.out.println(e.getMessage());	
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
 				}
 			}
 		});
-		
+
 		SignUpResponse dto = new SignUpResponse();
 		BeanUtils.copyProperties(persistentUser, dto);// for sending resp : copied User--->User resp DTO
 		System.out.println(dto);

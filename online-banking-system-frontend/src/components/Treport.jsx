@@ -1,5 +1,4 @@
 import axios from "axios";
-import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import DataTable from 'react-data-table-component';
 
@@ -13,10 +12,8 @@ function Treport() {
     const [transactionList, setTransactionList] = useState([]);
 
 
-    // var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
+    var accountNumber = window.sessionStorage.getItem("accountNumberInSession");
     const method1 = () => {
-        const accountNumber = jwtDecode(sessionStorage.getItem("accountNo")).sub;
-
         axios.get("http://localhost:8080/api/accounts/transactionslist/" + accountNumber, {
             headers: {
                 Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
@@ -49,10 +46,6 @@ function Treport() {
         {
             name: 'Receiver Account Number',
             selector: (row) => row.transactionTo,
-        },
-        {
-            name: 'Sender Account Number',
-            selector: (row) => row.transactionFrom,
         },
         {
             name: 'Transaction Status',

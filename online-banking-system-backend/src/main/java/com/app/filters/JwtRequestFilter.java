@@ -35,6 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			String authHeader = request.getHeader("Authorization");
 			if (authHeader != null && authHeader.startsWith("Bearer ")) {
 				String jwt = authHeader.substring(7); // extract JWT
+				System.out.println(jwt);
 				if (jwtUtils.validateJwtToken(jwt)) {
 					// Validated token : get user's identity n add it in SecurityContext holder
 					UserDetails userDetails = userDetailsService
