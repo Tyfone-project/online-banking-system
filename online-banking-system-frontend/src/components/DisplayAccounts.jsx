@@ -1,10 +1,12 @@
 import axios from "axios";
 import { Form, Modal } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
+
 function DisplayAccounts() {
+
   const [accounts, setAccounts] = useState([]);
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
@@ -89,7 +91,7 @@ function DisplayAccounts() {
 
 
   const handleCreateAccount = (e) => {
-    console.log(accountType,pin);
+    console.log(accountType, pin);
     e.preventDefault();
     axios.post(
       "http://localhost:8080/api/accounts/addAccount",
@@ -100,8 +102,10 @@ function DisplayAccounts() {
         },
       }
     );
+    window.location.reload();
     handleClose2();
   };
+
 
   return (
     <>

@@ -54,7 +54,8 @@ public class AccountServiceImpl implements IAccountService {
 		Account senderAccountObject = accountRepo.findByAccountNo(senderAccountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
 
-		if (senderAccountObject.getBalance().compareTo(BigDecimal.ZERO) > 0) {
+		if (senderAccountObject.getBalance().compareTo(BigDecimal.ZERO) > 0
+				&& (senderAccountObject.getAccountNo() != receiverAccountObject.getAccountNo())) {
 
 			senderAccountObject.setBalance(senderAccountObject.getBalance().subtract(amountToTransfer));
 
@@ -66,7 +67,12 @@ public class AccountServiceImpl implements IAccountService {
 			System.out.println("transfer funds sucessful");
 			return receiverAccountObject;
 		}
-		throw new RuntimeException("Insufficient Funds!!!");
+		else if(senderAccountObject.getAccountNo() == receiverAccountObject.getAccountNo()) {
+			throw new RuntimeException("Cannot Transfer Money To Same Account!!!");
+		}
+		else {
+			throw new RuntimeException("Insufficient Funds!!!");
+		}
 	}
 
 	@Override
@@ -91,14 +97,14 @@ public class AccountServiceImpl implements IAccountService {
 
 		return new UserDto(
 				accounts.stream().map((acc) -> new UserAccountDto(acc.getAccountNo(), acc.getAccountType().toString()))
-						.collect(Collectors.toList()),user.getFirstName()+" "+user.getLastName(),
-				user.getProfilePicture());
+						.collect(Collectors.toList()),
+				user.getFirstName() + " " + user.getLastName(), user.getProfilePicture());
 	}
 
 	@Override
 	public SignInResponse loginToAccount(long accountNumber, String pin, Authentication auth) {
 
-		System.out.println(accountNumber+" | "+pin);
+		System.out.println(accountNumber + " | " + pin);
 		Account loginAccountObject = accountRepo.findByAccountNo(accountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
 		System.out.println(loginAccountObject);
@@ -113,7 +119,8 @@ public class AccountServiceImpl implements IAccountService {
 	public AccountDashboardDto getAccountDashboard(long accountNumber) {
 		Account account = accountRepo.findByAccountNo(accountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
-		return new AccountDashboardDto(account.getBalance(), transactionRepo.findRecentTransactions(accountNumber), transactionRepo.getMoneySpentThisMonth(accountNumber));
+		return new AccountDashboardDto(account.getBalance(), transactionRepo.findRecentTransactions(accountNumber),
+				transactionRepo.getMoneySpentThisMonth(accountNumber));
 	}
 
 }

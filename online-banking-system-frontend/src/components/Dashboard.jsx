@@ -45,7 +45,7 @@ function Dashboard() {
           <SidebarContent>
             <Menu iconShape="circle">
               <MenuItem><Link to="/account">Home</Link></MenuItem>
-              <MenuItem><Link to="transferfunds">Deposit Money</Link></MenuItem>
+              <MenuItem><Link to="#">Deposit Money</Link></MenuItem>
               <MenuItem><Link to="transferfunds">Transfer Funds</Link></MenuItem>
               <MenuItem><Link to="transactionslist">Transaction History</Link></MenuItem>
             </Menu>

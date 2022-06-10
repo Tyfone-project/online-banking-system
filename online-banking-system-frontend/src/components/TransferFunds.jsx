@@ -6,26 +6,36 @@ import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import moneytransfer from "../images/moneytransfer.jpg";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function TransferFunds() {
+
+    const notify = () => toast.success('Successfully Transferred', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
 
     const userAccountDetails = useFormik({
         initialValues: {
             senderAccountNumber: "",
             receiverAccountNumber: "",
-            dateOfTransaction: "",
+            dateOfTransaction: new Date().toISOString().split('T')[0],
             amountToTransfer: "",
         },
         validationSchema: Yup.object({
-            // senderAccountNumber: Yup.string()
-            //     .max(16, "Cannot exceed 16 digits")
-            //     .required("Sender account number is required"),
             receiverAccountNumber: Yup.string()
+                .notOneOf([jwtDecode(sessionStorage.getItem("accountNo")).sub,null], "Cannot Transfer Money To Same Account!!!")
                 .max(16, "Cannot exceed 16 digits")
                 .required("Receiver account number is required"),
-            dateOfTransaction: Yup.date()
-                .required("DOB is required"),
-            amountToTransfer: Yup.string()
+            amountToTransfer: Yup.number()
+                .min(1, "Cannot be less than One")
                 .max(40000, "Cannot be more than Forty-thousand")
                 .required("Amount is required"),
         }),
@@ -42,7 +52,12 @@ function TransferFunds() {
                         Authorization: "Bearer " + sessionStorage.getItem("tokenId"),
                     },
                 }
-            ).then(res => console.log(res.data)).catch(err => console.log(err));
+            ).then(res => {
+                console.log(res.data);
+                { notify() }
+            }).catch(err => {
+                console.log(err);
+            });
         },
     });
 
@@ -50,7 +65,6 @@ function TransferFunds() {
     console.log(accountNumber);
     return (
         <>
-
 
             <div className="card mx-auto shadow" style={{ width: "45%", marginTop: "10%" }}>
                 <div className="row g-0 d-flex flex-wrap align-items-center">
@@ -100,7 +114,9 @@ function TransferFunds() {
                                 name="dateOfTransaction"
                                 type="date"
                                 placeholder="Enter Date Of Transaction"
-                                value={userAccountDetails.values.dateOfTransaction}
+                                disabled
+                                // value={userAccountDetails.values.dateOfTransaction}
+                                value={new Date().toISOString().split('T')[0]}
                                 onChange={userAccountDetails.handleChange}
                                 onBlur={userAccountDetails.handleBlur}
                             />
@@ -135,6 +151,20 @@ function TransferFunds() {
                     </Form>
 
                 </div>
+
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
+                {/* Same as */}
+                <ToastContainer />
 
             </div>
 
