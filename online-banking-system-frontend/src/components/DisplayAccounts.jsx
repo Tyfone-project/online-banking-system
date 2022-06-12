@@ -27,6 +27,7 @@ function DisplayAccounts() {
     setAccountPinErr("");
   };
 
+
   const [accountPin, setAccountPin] = useState("");
   const [accountPinErr, setAccountPinErr] = useState("");
   let navigate = useNavigate();
@@ -83,9 +84,13 @@ function DisplayAccounts() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("tokenId");
+    const accNo = sessionStorage.getItem("accountNo");
     if (token) {
       if (jwtDecode(token).exp < Date.now() / 1000) navigate("/login");
     } else navigate("/login");
+    if (accNo) {
+      if (jwtDecode(accNo).exp > Date.now() / 1000) navigate("/account");}
+    // } else navigate("/customer");
   });
 
   const fetchAccounts = () => {

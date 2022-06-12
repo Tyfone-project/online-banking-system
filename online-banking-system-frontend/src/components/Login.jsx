@@ -2,6 +2,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import jwtDecode from "jwt-decode";
 import React from "react";
+import { useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
@@ -23,12 +24,20 @@ function Signin() {
         .then((res) => {
           if (res.status === 200) {
             sessionStorage.setItem("tokenId", res.data.tokenId);
-            toast.success("Login Successful");
+            
             navigate("/customer");
+            toast.success("Login Successful");
           }
-        }).catch(toast.error("Invalid Credentials"));
+        }).catch(() => toast.error("Invalid Credentials"));
     },
   });
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("tokenId");
+    if (token) {
+      if (jwtDecode(token).exp > Date.now() / 1000) navigate("/customer");
+    } else navigate("/login");
+  },[]);
 
   return (
     <>
