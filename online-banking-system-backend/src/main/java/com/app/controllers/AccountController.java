@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.AccountDto;
 import com.app.dto.ChartRequestDto;
+import com.app.dto.DepositMoneyDto;
 import com.app.dto.TransferFundsDto;
 import com.app.services.IAccountService;
 import com.app.services.ITransactionService;
@@ -70,6 +71,12 @@ public class AccountController {
 	public ResponseEntity<?> getMoneySpentByMonth(@RequestBody ChartRequestDto chartRequest){
 		
 		return new ResponseEntity<>(transactionService.getMoneySpentByMonth(chartRequest),HttpStatus.OK);
+	}
+	
+	@PostMapping("/depositmoney")
+	public void depositMoney(@RequestBody DepositMoneyDto depositMoneyDto) {
+		System.out.println(depositMoneyDto.getAccountNo() + " " + depositMoneyDto.getBalance());
+		accountService.depositMoney(depositMoneyDto.getAccountNo(), depositMoneyDto.getBalance());
 	}
 	
 }

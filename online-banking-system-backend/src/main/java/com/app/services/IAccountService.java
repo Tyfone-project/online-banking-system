@@ -3,8 +3,6 @@ package com.app.services;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 
@@ -13,7 +11,6 @@ import com.app.dto.AccountDto;
 import com.app.dto.SignInResponse;
 import com.app.dto.UserDto;
 import com.app.pojos.Account;
-import com.app.pojos.User;
 
 public interface IAccountService {
 	
@@ -28,5 +25,8 @@ public interface IAccountService {
 	
 	public AccountDashboardDto getAccountDashboard(long accountNumber);
 
+	public void depositMoney(long accountNo, BigDecimal balance);
+	
+	public long getPhoneNumber(long accountNo);
 	
 }

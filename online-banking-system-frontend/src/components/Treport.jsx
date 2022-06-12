@@ -3,9 +3,11 @@ import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import DataTable from 'react-data-table-component';
 
-
-
-
+var formatter = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  });
 
 function Treport() {
 
@@ -37,22 +39,41 @@ function Treport() {
         {
             name: 'Transaction ID',
             selector: (row) => row.transactionId,
+            sortable: true,
         },
         {
             name: 'Amount',
             selector: (row) => row.amount,
+            sortable: true,
+            conditionalCellStyles: [
+                {
+                    when: row => row.transactionFrom==jwtDecode(sessionStorage.getItem("accountNo")).sub,
+                    style: {
+                        color: 'red',
+                    }
+                },
+                {
+                    when: row => row.transactionTo==jwtDecode(sessionStorage.getItem("accountNo")).sub,
+                    style: {
+                        color: 'green',
+                    }
+                },
+            ]
         },
         {
             name: 'Transaction Date',
             selector: (row) => row.date,
+            sortable: true,
         },
         {
             name: 'Receiver Account Number',
             selector: (row) => row.transactionTo,
+            sortable: true,
         },
         {
             name: 'Sender Account Number',
             selector: (row) => row.transactionFrom,
+            sortable: true,
         },
         {
             name: 'Transaction Status',
@@ -78,6 +99,7 @@ function Treport() {
                         responsive
                         subHeaderAlign="right"
                         subHeaderWrap
+                        selectableRows
                     />
                 </div>
             </div>

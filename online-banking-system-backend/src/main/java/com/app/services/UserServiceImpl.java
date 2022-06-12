@@ -42,7 +42,7 @@ public class UserServiceImpl implements IUserService {
 		try {
 			user.setProfilePicture(image.getBytes());
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Error saving image");
 		}
 		
 		User persistentUser = userRepo.save(user);

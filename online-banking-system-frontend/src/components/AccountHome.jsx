@@ -97,7 +97,7 @@ function AccountHome() {
                     <td>{tx.transactionId}</td>
                     <td>{tx.transactionFrom}</td>
                     <td>{tx.transactionTo}</td>
-                    <td>{tx.amount}</td>
+                    <td className={tx.transactionFrom==jwtDecode(sessionStorage.getItem("accountNo")).sub ? "text-danger" : "text-success"}>{formatter.format(tx.amount)}</td>
                     <td>{tx.date}</td>
                     <td style={{ color: "green", fontWeight: "bold" }}>
                       {tx.transactionStatus}

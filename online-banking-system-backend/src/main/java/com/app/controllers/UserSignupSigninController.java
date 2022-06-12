@@ -37,7 +37,6 @@ public class UserSignupSigninController {
 
 	@PostMapping(value = "/signup", consumes = {"multipart/form-data"})
 	public ResponseEntity<?> signUp(@RequestPart SignUpRequest request, @RequestPart MultipartFile image) {
-		System.out.println("in user reg " + request);
 		return new ResponseEntity<>(userService.registerUser(request, image), HttpStatus.CREATED);
 	}
 

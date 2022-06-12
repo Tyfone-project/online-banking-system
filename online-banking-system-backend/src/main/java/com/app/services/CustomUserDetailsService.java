@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.app.custom_exceptions.ResourceNotFoundException;
 import com.app.dao.UserRepository;
 import com.app.pojos.CustomUserDetails;
 import com.app.pojos.User;
@@ -19,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		long customerId = Long.parseLong(username);
-		User user = userRepo.findByCustomerId(customerId).orElseThrow(()->new RuntimeException());
+		User user = userRepo.findByCustomerId(customerId).orElseThrow(()->new ResourceNotFoundException("User not found!"));
 		return new CustomUserDetails(user);
 	}
 

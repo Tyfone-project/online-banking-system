@@ -2,13 +2,16 @@ import axios from "axios";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 function Signup() {
   const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png")
+  const [preview, setPreview] = useState(
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
+  );
   const [showKycForm, setShowKycForm] = useState(false);
+  const navigate = useNavigate();
 
   const userDetails = useFormik({
     initialValues: {
@@ -83,17 +86,20 @@ function Signup() {
         panNo: kycDetails.values.panNo,
         address: kycDetails.values.address,
         roles: "ROLE_CUSTOMER",
-      }
+      };
       const json = JSON.stringify(obj);
-      const blob = new Blob([json],{
-        type: "application/json"
-      })
+      const blob = new Blob([json], {
+        type: "application/json",
+      });
       const formData = new FormData();
-      formData.append("request",blob);
-      formData.append("image",image);
-      axios
-        .post("http://localhost:8080/api/signup", formData)
-        .then((res) => console.log(res));
+      formData.append("request", blob);
+      formData.append("image", image);
+      axios.post("http://localhost:8080/api/signup", formData).then((res) => {
+        navigate("/login");
+        toast.success(
+          "Sign up successful. Check your E-Mail for your Customer ID"
+        );
+      });
     },
   });
 
@@ -101,12 +107,12 @@ function Signup() {
     setImage(e.target.files[0]);
     const reader = new FileReader();
     reader.onload = () => {
-      if(reader.readyState ==2 ){
-        setPreview(reader.result)
+      if (reader.readyState == 2) {
+        setPreview(reader.result);
       }
-    }
-    reader.readAsDataURL(e.target.files[0])
-  }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
 
   return (
     <>
@@ -124,7 +130,6 @@ function Signup() {
           <Form onSubmit={userDetails.handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Control
-
                 name="firstName"
                 type="text"
                 placeholder="Enter First Name"
@@ -298,17 +303,22 @@ function Signup() {
             </Form.Group>
 
             <div className="d-flex gap-4 align-items-center justify-content-between">
-              <img src={preview} height="150px" width="150px" className="rounded-2" />
-            <Form.Group>
-              <Form.Label>Upload Profile Picture</Form.Label>
-              <Form.Control
-                type="file"
-                name="img"
-                accept="image/*"
-                required={true}
-                onChange={handleImageUpload}
+              <img
+                src={preview}
+                height="150px"
+                width="150px"
+                className="rounded-2"
               />
-            </Form.Group>
+              <Form.Group>
+                <Form.Label>Upload Profile Picture</Form.Label>
+                <Form.Control
+                  type="file"
+                  name="img"
+                  accept="image/*"
+                  required={true}
+                  onChange={handleImageUpload}
+                />
+              </Form.Group>
             </div>
 
             <div className="d-flex gap-5 mt-3">
@@ -320,12 +330,11 @@ function Signup() {
               >
                 Back
               </Button>
-              <Button variant="primary" type="submit" className="w-100 m-0">
+              <Button variant="primary" type="submit" className="w-100">
                 Sign Up
               </Button>
             </div>
           </Form>
-
         </section>
       )}
     </>

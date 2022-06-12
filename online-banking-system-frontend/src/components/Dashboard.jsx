@@ -50,7 +50,7 @@ function Dashboard() {
                 <Link to="/account">Home</Link>
               </MenuItem>
               <MenuItem>
-                <Link to="transferfunds">Deposit Money</Link>
+                <Link to="depositmoney">Deposit Money</Link>
               </MenuItem>
               <MenuItem>
                 <Link to="transferfunds">Transfer Funds</Link>

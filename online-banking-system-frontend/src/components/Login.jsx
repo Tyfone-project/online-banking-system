@@ -5,10 +5,7 @@ import React from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
-
 function Signin() {
-
-
   const navigate = useNavigate();
   const login = useFormik({
     initialValues: {
@@ -16,13 +13,13 @@ function Signin() {
       password: "",
     },
     onSubmit: (values) => {
-
       axios
         .post("http://localhost:8080/api/signin", { ...values })
         .then((res) => {
-          if (res.status === 200){ 
-          sessionStorage.setItem("tokenId", res.data.tokenId);
-          navigate("/customer");}
+          if (res.status === 200) {
+            sessionStorage.setItem("tokenId", res.data.tokenId);
+            navigate("/customer");
+          }
         });
     },
   });
