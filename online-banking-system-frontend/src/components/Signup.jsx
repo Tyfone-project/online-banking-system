@@ -4,14 +4,18 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function Signup() {
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
   );
   const [showKycForm, setShowKycForm] = useState(false);
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   const userDetails = useFormik({
     initialValues: {
@@ -89,17 +93,18 @@ function Signup() {
       };
       const json = JSON.stringify(obj);
       const blob = new Blob([json], {
-        type: "application/json",
-      });
+        type: "application/json"
+      })
       const formData = new FormData();
       formData.append("request", blob);
       formData.append("image", image);
-      axios.post("http://localhost:8080/api/signup", formData).then((res) => {
-        navigate("/login");
-        toast.success(
-          "Sign up successful. Check your E-Mail for your Customer ID"
-        );
-      });
+      axios
+        .post("http://localhost:8080/api/signup", formData)
+        .then((res) => {
+          console.log(res);
+          toast.success("SignUp Successful");
+          navigate("/login");
+        }).catch(toast.error("SignUp Unsuccessful"));
     },
   });
 
@@ -108,7 +113,7 @@ function Signup() {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState == 2) {
-        setPreview(reader.result);
+        setPreview(reader.result)
       }
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -303,12 +308,7 @@ function Signup() {
             </Form.Group>
 
             <div className="d-flex gap-4 align-items-center justify-content-between">
-              <img
-                src={preview}
-                height="150px"
-                width="150px"
-                className="rounded-2"
-              />
+              <img src={preview} height="150px" width="150px" className="rounded-2" />
               <Form.Group>
                 <Form.Label>Upload Profile Picture</Form.Label>
                 <Form.Control

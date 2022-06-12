@@ -12,16 +12,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function TransferFunds() {
 
-    const notify = () => toast.success('Successfully Transferred', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-    });
-
     const userAccountDetails = useFormik({
         initialValues: {
             senderAccountNumber: "",
@@ -54,7 +44,7 @@ function TransferFunds() {
                 }
             ).then(res => {
                 console.log(res.data);
-                notify();
+                toast.success("Successfully Transferred");
                 resetForm();
             }).catch(err => {
                 console.log(err);
@@ -152,19 +142,6 @@ function TransferFunds() {
                     </Form>
 
                 </div>
-
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                />
-                {/* Same as */}
                 <ToastContainer />
 
             </div>

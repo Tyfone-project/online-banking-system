@@ -4,8 +4,13 @@ import jwtDecode from "jwt-decode";
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function Signin() {
+
   const navigate = useNavigate();
   const login = useFormik({
     initialValues: {
@@ -18,9 +23,10 @@ function Signin() {
         .then((res) => {
           if (res.status === 200) {
             sessionStorage.setItem("tokenId", res.data.tokenId);
+            toast.success("Login Successful");
             navigate("/customer");
           }
-        });
+        }).catch(toast.error("Invalid Credentials"));
     },
   });
 

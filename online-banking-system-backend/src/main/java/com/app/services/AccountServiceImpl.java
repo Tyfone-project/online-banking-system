@@ -32,6 +32,9 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Transactional
 public class AccountServiceImpl implements IAccountService {
@@ -52,7 +55,6 @@ public class AccountServiceImpl implements IAccountService {
 	public Account transferFunds(long senderAccountNumber, long receiverAccountNumber, BigDecimal amountToTransfer,
 			LocalDate amountTransferDate) {
 
-		System.out.println("in transfer funds method");
 		Account receiverAccountObject = accountRepo.findByAccountNo(receiverAccountNumber)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Account Number!!!"));
 
@@ -66,17 +68,22 @@ public class AccountServiceImpl implements IAccountService {
 
 			receiverAccountObject.setBalance(receiverAccountObject.getBalance().add(amountToTransfer));
 
-			transactionRepo.save(new Transaction(receiverAccountNumber, amountToTransfer, amountTransferDate,
-					TransactionStatus.SUCCESS, senderAccountObject));
+			Transaction successfulTransaction = new Transaction(receiverAccountNumber, amountToTransfer, amountTransferDate,
+					TransactionStatus.SUCCESS, senderAccountObject);
+			transactionRepo.save(successfulTransaction);
 
 			System.out.println("transfer funds sucessful");
 			sendTransferMoneyMessage(senderAccountNumber, receiverAccountNumber, amountToTransfer);
+			log.info(successfulTransaction.toString());
 			return receiverAccountObject;
 		}
 		else if(senderAccountObject.getAccountNo() == receiverAccountObject.getAccountNo()) {
+			
+			log.error("Cannot Transfer Money To Same Account!!!");
 			throw new RuntimeException("Cannot Transfer Money To Same Account!!!");
 		}
 		else {
+			log.error("Insufficient Funds!!!");
 			throw new RuntimeException("Insufficient Funds!!!");
 		}
 	}

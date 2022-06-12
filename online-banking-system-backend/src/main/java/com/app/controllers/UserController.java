@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dto.AccountLoginDto;
 import com.app.services.IAccountService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/user")
@@ -24,9 +27,11 @@ public class UserController {
 	@PostMapping("/logintoaccount")
 	public ResponseEntity<?> processAccountLogin(@RequestBody AccountLoginDto accountLogin, Authentication auth) {
 		try {
+			log.info(accountLogin.getAccountNumber() + " | " + accountLogin.getPin());
 			return ResponseEntity.status(HttpStatus.ACCEPTED)
 					.body(accountService.loginToAccount(accountLogin.getAccountNumber(), accountLogin.getPin(), auth));
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
 	}

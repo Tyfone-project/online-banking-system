@@ -2,6 +2,8 @@ package com.app.services;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import javax.transaction.Transactional;
 
@@ -10,12 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import com.app.dao.UserRepository;
 import com.app.dto.SignUpRequest;
 import com.app.dto.SignUpResponse;
 import com.app.pojos.User;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService {
@@ -25,6 +32,12 @@ public class UserServiceImpl implements IUserService {
 	
 	@Autowired
 	private PasswordEncoder encoder;
+	
+	@Autowired
+	private JavaMailSender mailSender;
+
+	public static int noOfQuickServiceThreads = 20;
+	private ScheduledExecutorService quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads);
 
 	@Override
 	public SignUpResponse registerUser(SignUpRequest request, MultipartFile image) {
@@ -46,6 +59,25 @@ public class UserServiceImpl implements IUserService {
 		}
 		
 		User persistentUser = userRepo.save(user);
+		log.info(persistentUser.toString());
+		
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(request.getEmail());
+		mail.setSubject("Online Banking system registration completed successfully!!");
+		mail.setText("Hello " + persistentUser.getFirstName() + ",\n"
+				+ "You have successfully completed registration with online banking system, your Customer ID is  "
+				+ persistentUser.getCustomerId() + "\n" + "Use this customer ID to login");
+
+		quickService.submit(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					mailSender.send(mail);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		});
 		SignUpResponse dto = new SignUpResponse();
 		BeanUtils.copyProperties(persistentUser, dto);// for sending resp : copied User--->User resp DTO
 		System.out.println(dto);

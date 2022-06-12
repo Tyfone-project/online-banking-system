@@ -1,15 +1,17 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import DataTable from 'react-data-table-component';
 
-var formatter = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  });
 
 function Treport() {
+
+    var formatter = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+    });
 
 
     const [transactionList, setTransactionList] = useState([]);
@@ -34,6 +36,25 @@ function Treport() {
         method1();
     }, []);
 
+    const handleReport = () => {
+        const accountNumber = jwtDecode(sessionStorage.getItem("accountNo")).sub;
+        axios({
+            url: "http://localhost:8080/api/accounts/report/" + accountNumber, //your url
+            method: 'GET',
+            responseType: 'blob',
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("tokenId")
+            } // important
+        }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'TransactionReport.pdf'); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+        });
+    }
+
 
     const columns = [
         {
@@ -43,17 +64,17 @@ function Treport() {
         },
         {
             name: 'Amount',
-            selector: (row) => row.amount,
+            selector: (row) => formatter.format(row.amount),
             sortable: true,
             conditionalCellStyles: [
                 {
-                    when: row => row.transactionFrom==jwtDecode(sessionStorage.getItem("accountNo")).sub,
+                    when: row => (row.transactionFrom == jwtDecode(sessionStorage.getItem("accountNo")).sub),
                     style: {
-                        color: 'red',
+                        color: 'red'
                     }
                 },
                 {
-                    when: row => row.transactionTo==jwtDecode(sessionStorage.getItem("accountNo")).sub,
+                    when: row => (row.transactionTo == jwtDecode(sessionStorage.getItem("accountNo")).sub),
                     style: {
                         color: 'green',
                     }
@@ -78,17 +99,30 @@ function Treport() {
         {
             name: 'Transaction Status',
             selector: (row) => row.transactionStatus,
+            conditionalCellStyles: [                
+                {
+                    when: row => (row.transactionStatus == "SUCCESS"),
+                    style: {
+                        color: 'green',
+                        fontWeight: 'bold'
+                    }
+                },
+            ]
+         
         },
     ];
 
 
+
     return (
         <>
-            <div className="card mx-auto shadow" style={{ width: "85%", marginTop: "1%" }}>
+            <div className="card mx-auto shadow" style={{ width: "85%", marginTop: "3%", marginBottom: "3%" }}>
                 <div className="row g-0 d-flex flex-wrap align-items-center">
                     <div className="card-body">
-                        <h1 className="card-title display-4 text-center fw-bolder">Transaction Report</h1>
+                        <h1 className="card-title display-4 text-center fw-bolder">Transaction Report
+                        </h1>
                         <hr />
+
                     </div>
                     <DataTable
                         columns={columns}
@@ -101,6 +135,12 @@ function Treport() {
                         subHeaderWrap
                         selectableRows
                     />
+
+                </div>
+                <div className="d-flex justify-content-end">
+                    <Button onClick={() => handleReport()} size="sm">
+                        Download Report
+                    </Button>
                 </div>
             </div>
         </>
