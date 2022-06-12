@@ -1,6 +1,9 @@
 import React from "react";
 import landing from "../images/landing.jpg";
 import { Outlet } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function Landing() {
   return (
@@ -17,6 +20,7 @@ function Landing() {
           <img src={landing} className="w-100 h-100" />
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

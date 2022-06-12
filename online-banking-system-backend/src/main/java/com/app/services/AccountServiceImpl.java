@@ -27,6 +27,9 @@ import com.app.pojos.Transaction;
 import com.app.pojos.TransactionStatus;
 import com.app.pojos.User;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Transactional
 public class AccountServiceImpl implements IAccountService {
@@ -47,7 +50,6 @@ public class AccountServiceImpl implements IAccountService {
 	public Account transferFunds(long senderAccountNumber, long receiverAccountNumber, BigDecimal amountToTransfer,
 			LocalDate amountTransferDate) {
 
-		System.out.println("in transfer funds method");
 		Account receiverAccountObject = accountRepo.findByAccountNo(receiverAccountNumber)
 				.orElseThrow(() -> new RuntimeException("Invalid Account Number!!!"));
 
@@ -61,16 +63,20 @@ public class AccountServiceImpl implements IAccountService {
 
 			receiverAccountObject.setBalance(receiverAccountObject.getBalance().add(amountToTransfer));
 
-			transactionRepo.save(new Transaction(receiverAccountNumber, amountToTransfer, amountTransferDate,
-					TransactionStatus.SUCCESS, senderAccountObject));
+			Transaction successfulTransaction = new Transaction(receiverAccountNumber, amountToTransfer, amountTransferDate,
+					TransactionStatus.SUCCESS, senderAccountObject);
+			transactionRepo.save(successfulTransaction);
 
-			System.out.println("transfer funds sucessful");
+			log.info(successfulTransaction.toString());
 			return receiverAccountObject;
 		}
 		else if(senderAccountObject.getAccountNo() == receiverAccountObject.getAccountNo()) {
+			
+			log.error("Cannot Transfer Money To Same Account!!!");
 			throw new RuntimeException("Cannot Transfer Money To Same Account!!!");
 		}
 		else {
+			log.error("Insufficient Funds!!!");
 			throw new RuntimeException("Insufficient Funds!!!");
 		}
 	}

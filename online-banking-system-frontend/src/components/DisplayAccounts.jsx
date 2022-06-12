@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function DisplayAccounts() {
 
@@ -69,10 +72,11 @@ function DisplayAccounts() {
           }
         )
         .then((response) => {
-          sessionStorage.setItem("accountNo", response.data.tokenId)
+          sessionStorage.setItem("accountNo", response.data.tokenId);
           navigate("/account");
         })
         .catch((error) => {
+          toast.error("Account Login Denied");
           console.log(error);
           setAccountPinErr(error.response.data);
         });
@@ -116,6 +120,7 @@ function DisplayAccounts() {
         },
       }
     );
+    { notify6() }
     window.location.reload();
     handleClose2();
   };
@@ -157,8 +162,10 @@ function DisplayAccounts() {
             variant="danger"
             size="lg"
             onClick={() => {
+              
               sessionStorage.clear();
               navigate("/login");
+              toast.error("Customer LogOut Successful");
             }}
           >
             Log Out
@@ -324,6 +331,8 @@ function DisplayAccounts() {
       <div className="d-flex justify-content-center">
         <Button onClick={() => setShow2(true)}>Add Account</Button>
       </div>
+
+      <ToastContainer/>
     </>
   );
 }

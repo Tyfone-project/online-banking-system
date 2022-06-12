@@ -20,8 +20,7 @@ function AccountHome() {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8080/api/accounts/${
-          jwtDecode(sessionStorage.getItem("accountNo")).sub
+        `http://localhost:8080/api/accounts/${jwtDecode(sessionStorage.getItem("accountNo")).sub
         }`,
         {
           headers: {
@@ -97,7 +96,7 @@ function AccountHome() {
                     <td>{tx.transactionId}</td>
                     <td>{tx.transactionFrom}</td>
                     <td>{tx.transactionTo}</td>
-                    <td>{formatter.format(tx.amount)}</td>
+                    <td className={tx.transactionFrom == jwtDecode(sessionStorage.getItem("accountNo")).sub ? "text-danger" : "text-success"}>{formatter.format(tx.amount)}</td>
                     <td>{tx.date}</td>
                     <td style={{ color: "green", fontWeight: "bold" }}>
                       {tx.transactionStatus}

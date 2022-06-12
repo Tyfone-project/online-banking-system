@@ -21,6 +21,9 @@ import com.app.dto.SignUpRequest;
 import com.app.jwt_utils.JwtUtils;
 import com.app.services.IUserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -35,20 +38,23 @@ public class UserSignupSigninController {
 	@Autowired
 	private IUserService userService;
 
-	@PostMapping(value = "/signup", consumes = {"multipart/form-data"})
+	@PostMapping(value = "/signup", consumes = { "multipart/form-data" })
 	public ResponseEntity<?> signUp(@RequestPart SignUpRequest request, @RequestPart MultipartFile image) {
-		System.out.println("in user reg " + request);
+		log.info(request.getFirstName() + " | " + request.getLastName() + " | " + request.getPassword() + " | "
+				+ request.getEmail() + " | " + request.getAadharNo());
 		return new ResponseEntity<>(userService.registerUser(request, image), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> logIn(@RequestBody SignInRequest request) {
 		try {
+			log.info("SignIn Request Credentials : " + request.getCustomerId() + " | " + request.getPassword());
 			Authentication authenticatedUser = authManager.authenticate(
 					new UsernamePasswordAuthenticationToken(request.getCustomerId(), request.getPassword()));
 			// authentication success
 			return ResponseEntity.ok(new SignInResponse(jwtUtils.generateJwtToken(authenticatedUser)));
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 			throw new RuntimeException("User authentication failed", e);
 		}

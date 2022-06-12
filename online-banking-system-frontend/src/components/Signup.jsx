@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function Signup() {
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png")
   const [showKycForm, setShowKycForm] = useState(false);
@@ -96,8 +100,9 @@ function Signup() {
         .post("http://localhost:8080/api/signup", formData)
         .then((res) => {
           console.log(res);
+          toast.success("SignUp Successful");
           navigate("/login");
-        });
+        }).catch(toast.error("SignUp Unsuccessful"));
     },
   });
 

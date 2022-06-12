@@ -20,6 +20,9 @@ import com.app.dto.SignUpRequest;
 import com.app.dto.SignUpResponse;
 import com.app.pojos.User;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService {
@@ -56,6 +59,8 @@ public class UserServiceImpl implements IUserService {
 		}
 		
 		User persistentUser = userRepo.save(user);
+		log.info(persistentUser.toString());
+		
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(request.getEmail());
 		mail.setSubject("Online Banking system registration completed successfully!!");
