@@ -72,7 +72,6 @@ public class AccountServiceImpl implements IAccountService {
 					TransactionStatus.SUCCESS, senderAccountObject);
 			transactionRepo.save(successfulTransaction);
 
-			System.out.println("transfer funds sucessful");
 			sendTransferMoneyMessage(senderAccountNumber, receiverAccountNumber, amountToTransfer);
 			log.info(successfulTransaction.toString());
 			return receiverAccountObject;
@@ -90,7 +89,6 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public String saveAccount(AccountDto request, Principal principal) {
-		System.out.println(request.getPin() + " " + request.getAccountType());
 		long custId = Long.parseLong(principal.getName());
 		User user = userRepo.findById(custId)
 				.orElseThrow(() -> new ResourceNotFoundException("No customer exists with customer id: " + custId));
@@ -144,9 +142,9 @@ public class AccountServiceImpl implements IAccountService {
 		long number = accountRepo.getPhoneNumber(accountNo);
 		String phoneNumber="+91".concat(Long.toString(number));
 		
-		Twilio.init("ACb651bc17b14747391d4f94bc20ef0111", "f9d7f57fda636d90eeef747ed2655188");
-		Message message = Message.creator(new PhoneNumber(phoneNumber), new PhoneNumber("(850) 789-6430"), depositMoneyMessage).create();
-		System.out.println(message.getSid());
+		Twilio.init("AC9a25afa985740c879463f3b6ce51ea46", "366544fa5e2be9661d98db5fb9ce46fe");
+		Message message = Message.creator(new PhoneNumber(phoneNumber), new PhoneNumber("14142961951"), depositMoneyMessage).create();
+		log.info(depositMoneyMessage);
 	}
 
 	@Override
@@ -164,10 +162,11 @@ public class AccountServiceImpl implements IAccountService {
 		String receiverPhoneNumber = "+91".concat(Long.toString(getReceiverPhoneNumber));
 		System.out.println(senderPhoneNumber + " " + receiverPhoneNumber);
 		
-		Twilio.init("ACb651bc17b14747391d4f94bc20ef0111", "f9d7f57fda636d90eeef747ed2655188");
-		Message senderMessage = Message.creator(new com.twilio.type.PhoneNumber(senderPhoneNumber), new com.twilio.type.PhoneNumber("(850) 789-6430"), debitedMoneyMessage).create();
-		Message receiverMessage = Message.creator(new com.twilio.type.PhoneNumber(receiverPhoneNumber), new com.twilio.type.PhoneNumber("(850) 789-6430"), creditedMoneyMessage).create();
-		System.out.println(senderMessage.getSid() + " " + receiverMessage.getSid());
+		Twilio.init("AC9a25afa985740c879463f3b6ce51ea46", "366544fa5e2be9661d98db5fb9ce46fe");
+		Message senderMessage = Message.creator(new com.twilio.type.PhoneNumber(senderPhoneNumber), new com.twilio.type.PhoneNumber("+14142961951"), debitedMoneyMessage).create();
+		Message receiverMessage = Message.creator(new com.twilio.type.PhoneNumber(receiverPhoneNumber), new com.twilio.type.PhoneNumber("+14142961951"), creditedMoneyMessage).create();
+		log.info(debitedMoneyMessage);
+		log.info(creditedMoneyMessage);
 		
 	}
 }

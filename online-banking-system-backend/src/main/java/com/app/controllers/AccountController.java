@@ -85,7 +85,7 @@ public class AccountController {
 	
 	@PostMapping("/depositmoney")
 	public void depositMoney(@RequestBody DepositMoneyDto depositMoneyDto) {
-		System.out.println(depositMoneyDto.getAccountNo() + " " + depositMoneyDto.getBalance());
+		log.info("Deposit Request : "+depositMoneyDto.getAccountNo() + " " + depositMoneyDto.getBalance());
 		accountService.depositMoney(depositMoneyDto.getAccountNo(), depositMoneyDto.getBalance());
 	}
 	

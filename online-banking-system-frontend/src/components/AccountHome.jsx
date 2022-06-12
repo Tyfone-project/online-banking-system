@@ -66,45 +66,50 @@ function AccountHome() {
             </h3>
             <hr />
           </div>
-          <Table className="table align-middle bg-white table-striped">
-            <thead className="thead-dark">
-              <tr style={{ height: "75px" }}>
-                <th scope="col" className="align-middle">
-                  Transaction ID
-                </th>
-                <th scope="col" className="align-middle">
-                  Transaction From
-                </th>
-                <th scope="col" className="align-middle">
-                  Transaction To
-                </th>
-                <th scope="col" className="align-middle">
-                  Amount
-                </th>
-                <th scope="col" className="align-middle">
-                  Transaction Date
-                </th>
-                <th scope="col" className="align-middle">
-                  Transaction Status
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {resp.recentTransactions.length > 0 &&
-                resp.recentTransactions.map((tx) => (
-                  <tr>
-                    <td>{tx.transactionId}</td>
-                    <td>{tx.transactionFrom}</td>
-                    <td>{tx.transactionTo}</td>
-                    <td className={tx.transactionFrom == jwtDecode(sessionStorage.getItem("accountNo")).sub ? "text-danger" : "text-success"}>{formatter.format(tx.amount)}</td>
-                    <td>{tx.date}</td>
-                    <td style={{ color: "green", fontWeight: "bold" }}>
-                      {tx.transactionStatus}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </Table>
+          {resp.recentTransactions.length > 0 ? (
+            <Table className="table align-middle bg-white table-striped">
+              <thead className="thead-dark">
+                <tr style={{ height: "75px" }}>
+                  <th scope="col" className="align-middle">
+                    Transaction ID
+                  </th>
+                  <th scope="col" className="align-middle">
+                    Transaction From
+                  </th>
+                  <th scope="col" className="align-middle">
+                    Transaction To
+                  </th>
+                  <th scope="col" className="align-middle">
+                    Amount
+                  </th>
+                  <th scope="col" className="align-middle">
+                    Transaction Date
+                  </th>
+                  <th scope="col" className="align-middle">
+                    Transaction Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  resp.recentTransactions.map((tx) => (
+                    <tr>
+                      <td>{tx.transactionId}</td>
+                      <td>{tx.transactionFrom}</td>
+                      <td>{tx.transactionTo}</td>
+                      <td className={tx.transactionFrom == jwtDecode(sessionStorage.getItem("accountNo")).sub ? "text-danger" : "text-success"}>{formatter.format(tx.amount)}</td>
+                      <td>{tx.date}</td>
+                      <td style={{ color: "green", fontWeight: "bold" }}>
+                        {tx.transactionStatus}
+                      </td>
+                    </tr>
+                  ))}
+
+              </tbody>
+            </Table>
+          ) : (<h3 className="text-center">
+            You have no recent transactions to display.
+          </h3>)}
         </div>
       </div>
       <MoneySpentByMonth />
